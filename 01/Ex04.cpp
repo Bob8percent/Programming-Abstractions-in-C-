@@ -23,9 +23,9 @@ int main()
 int calcSumOddNums(int n)
 {
     int sum = 0;
-    for (int i = 1; i < 2 * n; i += 2)
+    for (int i = 0, nextOdd = 1; nextOdd < 2 * n; ++i, nextOdd += 2)    //  可読性のためこの書き方("i","j"は基本的にカウンタであるべき)
     {
-        sum += i;
+        sum += nextOdd;
     }
 
     return sum;
