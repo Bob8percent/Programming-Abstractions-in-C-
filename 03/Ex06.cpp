@@ -25,17 +25,17 @@ int main()
 std::string acronym(const std::string& str)
 {
 	std::string newStr = "";
-	int nextWordPos = 0;	//	英単語の位置
+	int wordPos = 0;	//	英単語の位置
 
 	while (1)
 	{
 		//	英単語の最初の位置を求める
-		for (int i = nextWordPos; i < str.length(); ++i)
+		for (int i = wordPos; i < str.length(); ++i)
 		{
 			char ch = str.at(i);
 			if (isalpha(ch))
 			{
-				nextWordPos = i;
+				wordPos = i;
 				newStr += toupper(ch);
 				break;
 			}
@@ -46,12 +46,12 @@ std::string acronym(const std::string& str)
 		}
 
 		//	英単語の最後の位置を求める
-		for (int i = nextWordPos + 1; i < str.length(); ++i)
+		for (int i = wordPos + 1; i < str.length(); ++i)
 		{
 			char ch = str.at(i);
 			if (!isalpha(ch))
 			{
-				nextWordPos = i;
+				wordPos = i;
 				break;
 			}
 			if (i == str.length() - 1)
