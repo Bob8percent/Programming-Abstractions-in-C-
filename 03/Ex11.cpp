@@ -49,3 +49,9 @@ bool isSentencePalindrome(const std::string& str)
 	return true;
 }
 
+//	===============================================================================================
+//	別のやり方は、
+// 
+//	std::string reverse と std::string newStrに対して
+//	上のfor文中でreverse = ch+ reverse(chが最前に配置される)、newStr += ch、
+//	for文を抜けたあとreturn reverse == newStr;
