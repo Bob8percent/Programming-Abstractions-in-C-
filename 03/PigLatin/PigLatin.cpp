@@ -31,7 +31,8 @@ std::string lineToPigLatin(const std::string& str)
 
 std::string wordToPigLatin(const std::string& word)
 {
-	const char startCh = tolower(word.at(0));
+	const char startCh = word.at(0);
+
 	if (isVowel(startCh))
 	{
 		//	最初の文字が母音の場合
@@ -42,14 +43,20 @@ std::string wordToPigLatin(const std::string& word)
 		int idx = isIncludeVowel(word);
 		if (idx != -1)
 		{
-			std::string s1 = word.substr(0, idx);
-			std::string s2 = word.substr(idx);
+			std::string lowerWord = toLowerStr(word);
 
-			return s2 + s1 + "ay";
+			std::string s1 = lowerWord.substr(0, idx);
+			std::string s2 = lowerWord.substr(idx);
+
+			std::string newWord = s2 + s1 + "ay";
+
+			char newStartChar = isupper(word.at(0)) ? toupper(newWord.at(0)) : newWord.at(0);
+			return newStartChar + newWord.substr(1);
 		}
 		else
 		{
 			return word;
 		}
 	}
+
 }
