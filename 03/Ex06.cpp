@@ -18,7 +18,7 @@ int main()
 		std::string str = "";
 		std::getline(std::cin, str);
 
-		std::cout << acronym(str) << "\n";
+		std::cout << "頭文字：" << acronym(str) << "\n";
 	}
 }
 
@@ -35,6 +35,7 @@ std::string acronym(const std::string& str)
 			char ch = str.at(i);
 			if (isalpha(ch))
 			{
+				nextWordPos = i;
 				newStr += toupper(ch);
 				break;
 			}
