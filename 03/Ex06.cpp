@@ -1,0 +1,65 @@
+
+/*
+* 非アルファベットで区切られた複合語の頭文字を表示する関数を実装する
+*/
+
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include "String.h"
+
+std::string acronym(const std::string& str);
+
+int main()
+{
+	while (1)
+	{
+		std::cout << "文字列：";
+		std::string str = "";
+		std::getline(std::cin, str);
+
+		std::cout << acronym(str) << "\n";
+	}
+}
+
+std::string acronym(const std::string& str)
+{
+	std::string newStr = "";
+	int nextWordPos = 0;	//	英単語の位置
+
+	while (1)
+	{
+		//	英単語の最初の位置を求める
+		for (int i = nextWordPos; i < str.length(); ++i)
+		{
+			char ch = str.at(i);
+			if (isalpha(ch))
+			{
+				newStr += toupper(ch);
+				break;
+			}
+			else if (i == str.length() - 1)
+			{
+				return newStr;
+			}
+		}
+
+		//	英単語の最後の位置を求める
+		for (int i = nextWordPos + 1; i < str.length(); ++i)
+		{
+			char ch = str.at(i);
+			if (!isalpha(ch))
+			{
+				nextWordPos = i;
+				break;
+			}
+			if (i == str.length() - 1)
+			{
+				return newStr;
+			}
+		}
+	}
+}
+
+
+
