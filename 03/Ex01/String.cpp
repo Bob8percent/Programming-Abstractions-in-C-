@@ -1,3 +1,5 @@
+#include "String.h"
+
 bool endWith(const std::string& str, const std::string& suffix)
 {
 	if (str.length() < suffix.length())
