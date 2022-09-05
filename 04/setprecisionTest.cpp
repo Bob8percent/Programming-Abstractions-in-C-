@@ -1,6 +1,6 @@
 
 /*
-* setprecisionの挙動を確認する
+* setprecisionマニピュレータの挙動を確認する
 */
 
 #include <iostream>
