@@ -3,6 +3,7 @@
 * 正弦余弦を表示するプログラム
 */
 
+//　visual studioでM_PIを使うためのdefine
 #define _USE_MATH_DEFINES
 
 #include <iostream>
