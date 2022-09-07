@@ -23,18 +23,18 @@ int promptForIntger(std::istream& is, const std::string& prompt);
 
 int main()
 {
-	//std::ifstream ifs;
-	//promptForOpenFile(ifs, "ファイル入力：");
+	std::ifstream ifs;
+	promptForOpenFile(ifs, "ファイル入力：");
 
-	//std::ofstream ofs;
-	//promptForOpenFile(ofs, "ファイル出力：");
+	std::ofstream ofs;
+	promptForOpenFile(ofs, "ファイル出力：");
 
 	int tabNum = promptForIntger(std::cin, "スペース数");
 
-	//tabToSpace(ifs, ofs, tabNum);
+	tabToSpace(ifs, ofs, tabNum);
 
-	//ofs.close();
-	//ifs.close();
+	ofs.close();
+	ifs.close();
 }
 
 void tabToSpace(std::istream& is, std::ostream& os, int tabNum)
