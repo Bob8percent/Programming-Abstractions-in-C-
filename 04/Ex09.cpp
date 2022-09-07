@@ -1,6 +1,8 @@
 
 /*
-* テキストファイルの文字列から指定のアルファベットを除く(小/大文字関係なく)
+* タブ文字を指定したスペース数になるように変換する
+* 
+* 文字列に関して、タブ文字は列数は多いが文字数は1つであることに注意
 */
 
 #define _USE_MATH_DEFINES
@@ -13,35 +15,66 @@
 #include <cmath>
 #include "String.h"
 
-//	引数を文字列参照型、返り値を文字列型にするよりも以下のほうが汎用性高い。文字列のみを扱いたいときはstringstreamを使えばいいから。
-void removeCharas(std::istream& is, std::ostream& os, const std::string& charas);
-std::string removeChara(const std::string& text, const char ch);
-void promptForOpenFile(std::ifstream& ifs);
-void promptForOpenFile(std::ofstream& ofs);
+void tabToSpace(std::istream& is, std::ostream& os, int tabNum);
+
+void promptForOpenFile(std::ifstream& ifs, const std::string& prompt);
+void promptForOpenFile(std::ofstream& ofs, const std::string& prompt);
+int promptForIntger(std::istream& is, const std::string& prompt);
 
 int main()
 {
-	std::ifstream ifs;
-	promptForOpenFile(ifs);
+	//std::ifstream ifs;
+	//promptForOpenFile(ifs, "ファイル入力：");
 
-	std::ofstream ofs;
-	promptForOpenFile(ofs);
+	//std::ofstream ofs;
+	//promptForOpenFile(ofs, "ファイル出力：");
 
-	std::string removeStr = "";
-	std::cout << "除去するアルファベット：";
-	std::getline(std::cin, removeStr);
+	int tabNum = promptForIntger(std::cin, "スペース数");
 
-	removeCharas(ifs, ofs, removeStr);
+	//tabToSpace(ifs, ofs, tabNum);
 
-	ofs.close();
-	ifs.close();
+	//ofs.close();
+	//ifs.close();
 }
 
-void promptForOpenFile(std::ifstream& ifs)
+void tabToSpace(std::istream& is, std::ostream& os, int tabNum)
+{
+	std::string line = "";
+	
+	while (std::getline(is, line))
+	{
+		int count = 0;
+		for (std::size_t i = 0; i < line.length(); ++i)
+		{
+			char ch = line.at(i);
+			if (ch == '\t')
+			{
+				int shift = tabNum - count % tabNum;
+				while (shift--)
+				{
+					os.put(' ');
+				}
+
+				count = 0;
+				continue;
+			}
+			else
+			{
+				os.put(ch);
+			}
+
+			count++;
+		}
+
+		os.put('\n');
+	}
+}
+
+void promptForOpenFile(std::ifstream& ifs, const std::string& prompt)
 {
 	while (1)
 	{
-		std::cout << "入力ファイル名：";
+		std::cout << prompt;
 		std::string filename = "";
 		std::getline(std::cin, filename);
 
@@ -52,15 +85,16 @@ void promptForOpenFile(std::ifstream& ifs)
 		}
 
 		ifs.clear();
-		std::cout << "ファイルが開けません" << std::endl;
+		std::cout << "ERROR:void promptForOpenFile(std::ifstream& ifs, const std::string& prompt) : "
+			<< "ファイルが開けません" << std::endl;
 	}
 }
 
-void promptForOpenFile(std::ofstream& ofs)
+void promptForOpenFile(std::ofstream& ofs, const std::string& prompt)
 {
 	while (1)
 	{
-		std::cout << "出力ファイル名：";
+		std::cout << prompt;
 		std::string filename = "";
 		std::getline(std::cin, filename);
 
@@ -71,51 +105,43 @@ void promptForOpenFile(std::ofstream& ofs)
 		}
 
 		ofs.clear();
-		std::cout << "ファイルが開けません" << std::endl;
+		std::cout << "ERROR:void promptForOpenFile(std::ofstream& ofs, const std::string& prompt) : "
+			<< "ファイルが開けません" << std::endl;
 	}
 }
 
-void removeCharas(std::istream& is, std::ostream& os, const std::string& charas)
+int promptForIntger(std::istream& is, const std::string& prompt)
 {
-	char ch;
-	std::string lowerCharas = toLowerStr(charas);
-	while (is.get(ch))
+	while (1)
 	{
-		if (lowerCharas.find(tolower(ch))==std::string::npos)
+		std::cout << prompt;
+		std::string line;
+		std::getline(is, line);
+
+		//	正しく整数に変換できないときのエラー検出のためにstringstreamを使用
+		int value;
+		std::istringstream iss(line);
+		//	std::skipwsは入力の際に先頭の空白を無効にするマニピュレータなので、指定位置は無関係
+		//	line=="1 2"のとき、valueは1を読み込む際に先頭の空白を無効にしようとするが、空白はないので無意味となる
+		//	std::wsのfailbit指定の挙動はよく知らないのでしばらくstd::skipwsを使っていくことにする
+		iss >> value >> std::skipws >> std::skipws;	
+
+		//	以下のすべての場合を正しく判定するために!iss.fail()とiss.eof()が必要
+		//	"1 2 3"	->	!iss.fail() = true, iss.eof() = false
+		//	"8t"	->	!iss.fail() = true,	iss.eof() = false
+		//	"8 "	->	!iss.fail() = true,	iss.eof() = false(この判定が正しいとするかは微妙ではあるが)
+		//	"8"		->	!iss.fail() = true,	iss.eof() = true
+		//	" 8"	->	!iss.fail() = true, iss.eof() = true
+
+		std::cout << std::boolalpha << !iss.fail() << std::endl;
+		std::cout << std::boolalpha << iss.eof() << std::endl;
+		if (!iss.fail() && iss.eof())
 		{
-			os.put(ch);
+			return value;
 		}
+
+		iss.clear();
+		std::cout << "ERROR:int promptForIntger(std::istream& is, const std::string& prompt) : "
+			<< "整数に変換できません" << std::endl;
 	}
 }
-
-//std::string removeCharas(const std::string& text, const std::string& charas)
-//{
-//	std::string newText = text;
-//	for (std::size_t n = 0; n < charas.length(); ++n)
-//	{
-//		char ch = charas.at(n);
-//		if (isalpha(ch))
-//		{
-//			newText = removeChara(newText, ch);
-//		}
-//	}
-//
-//	return newText;
-//}
-//
-//std::string removeChara(const std::string& text, const char ch)
-//{
-//	std::string newText = "";
-//	char lowerCh = tolower(ch);
-//	for (std::size_t i = 0; i < text.length(); ++i)
-//	{
-//		char currentCh = tolower(text.at(i));
-//		if (!(currentCh == lowerCh))
-//		{
-//			newText += text.at(i);
-//		}
-//	}
-//
-//	return newText;
-//}
-//
