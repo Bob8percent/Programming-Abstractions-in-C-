@@ -1,6 +1,11 @@
 
 /*
 * ファイルに現れるコメントを無視して出力する。
+* 
+* 実装過程で苦労したこと：std::size_tは-1になると最大になってしまうので、この型における引き算に注意
+* 
+* 学んだこと：改行された文字列について、それぞれの文末の文字は'\n'であるという理解でよさそう(また、当然だが文末以外に\nは来ない)
+* 
 *
 */
 
@@ -81,7 +86,7 @@ void removeComments(std::istream& is, std::ostream& os)
 			newText += line.substr(0, startCommentPos);
 			startCommentPos = std::string::npos;
 		}
-		newText += '\n';
+		newText += '\n';	//	std::getlineで取得できているということは改行文字が文末にあるのは確定
 	}
 
 	/*
@@ -108,8 +113,8 @@ void removeComments(std::istream& is, std::ostream& os)
 
 		if (startCommentPos != std::string::npos && endCommentPos != std::string::npos)
 		{
-			std::size_t pos = (startCommentPos >= 1) ? startCommentPos - 1 : 0;
-			newText = (newText.substr(0, pos) + newText.substr(endCommentPos + 1)) ;
+			std::size_t charNum = (startCommentPos >= 1) ? startCommentPos : 0;	//	コメントより以前の文字列の文字数
+			newText = (newText.substr(0, charNum) + newText.substr(endCommentPos + 1));
 
 			startCommentPos = std::string::npos;
 			endCommentPos = std::string::npos;
