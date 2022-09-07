@@ -29,6 +29,8 @@ int main()
 	promptForOpenFile(ifs);
 
 	removeComments(ifs, std::cout);
+	
+	
 }
 
 void promptForOpenFile(std::ifstream& ifs)
