@@ -13,12 +13,11 @@
 #include <cmath>
 #include "String.h"
 
-std::string removeCharas(const std::string& text, const std::string& charas);
+//	引数を文字列参照型、返り値を文字列型にするよりも以下のほうが汎用性高い。文字列のみを扱いたいときはstringstreamを使えばいいから。
+void removeCharas(std::istream& is, std::ostream& os, const std::string& charas);
 std::string removeChara(const std::string& text, const char ch);
 void promptForOpenFile(std::ifstream& ifs);
 void promptForOpenFile(std::ofstream& ofs);
-
-void copyStream(std::istream& is, std::ostream& os);
 
 int main()
 {
@@ -32,12 +31,7 @@ int main()
 	std::cout << "除去するアルファベット：";
 	std::getline(std::cin, removeStr);
 
-	std::ostringstream oss;
-	copyStream(ifs, oss);
-
-	std::string text = removeCharas(oss.str(), removeStr);
-
-	ofs << text;
+	removeCharas(ifs, ofs, removeStr);
 
 	ofs.close();
 	ifs.close();
@@ -81,42 +75,47 @@ void promptForOpenFile(std::ofstream& ofs)
 	}
 }
 
-std::string removeCharas(const std::string& text, const std::string& charas)
-{
-	std::string newText = text;
-	for (std::size_t n = 0; n < charas.length(); ++n)
-	{
-		char ch = charas.at(n);
-		if (isalpha(ch))
-		{
-			newText = removeChara(newText, ch);
-		}
-	}
-
-	return newText;
-}
-
-std::string removeChara(const std::string& text, const char ch)
-{
-	std::string newText = "";
-	char lowerCh = tolower(ch);
-	for (std::size_t i = 0; i < text.length(); ++i)
-	{
-		char currentCh = tolower(text.at(i));
-		if (!(currentCh == lowerCh))
-		{
-			newText += text.at(i);
-		}
-	}
-
-	return newText;
-}
-
-void copyStream(std::istream& is, std::ostream& os)
+void removeCharas(std::istream& is, std::ostream& os, const std::string& charas)
 {
 	char ch;
+	std::string lowerCharas = toLowerStr(charas);
 	while (is.get(ch))
 	{
-		os.put(ch);
+		if (lowerCharas.find(tolower(ch))==std::string::npos)
+		{
+			os.put(ch);
+		}
 	}
 }
+
+//std::string removeCharas(const std::string& text, const std::string& charas)
+//{
+//	std::string newText = text;
+//	for (std::size_t n = 0; n < charas.length(); ++n)
+//	{
+//		char ch = charas.at(n);
+//		if (isalpha(ch))
+//		{
+//			newText = removeChara(newText, ch);
+//		}
+//	}
+//
+//	return newText;
+//}
+//
+//std::string removeChara(const std::string& text, const char ch)
+//{
+//	std::string newText = "";
+//	char lowerCh = tolower(ch);
+//	for (std::size_t i = 0; i < text.length(); ++i)
+//	{
+//		char currentCh = tolower(text.at(i));
+//		if (!(currentCh == lowerCh))
+//		{
+//			newText += text.at(i);
+//		}
+//	}
+//
+//	return newText;
+//}
+//
