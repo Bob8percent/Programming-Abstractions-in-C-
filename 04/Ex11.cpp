@@ -56,6 +56,7 @@ int stringToInteger(const std::string& str)
 		return value;
 	}
 
+	iss.clear();
 	std::cout << "ERROR : int stringToInteger(const std::string& str) : "
 		<< "文字列を整数に変換できません" << std::endl;
 }
@@ -83,6 +84,7 @@ double stringToReal(const std::string& str)
 		return value;
 	}
 
+	iss.clear();
 	std::cout << "ERROR : double stringToReal(const std::string& str) : "
 		<< "文字列を実数に変換できません" << std::endl;
 }
