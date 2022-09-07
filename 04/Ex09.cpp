@@ -133,8 +133,8 @@ int promptForIntger(std::istream& is, const std::string& prompt)
 		//	"8"		->	!iss.fail() = true,	iss.eof() = true
 		//	" 8"	->	!iss.fail() = true, iss.eof() = true
 
-		std::cout << std::boolalpha << !iss.fail() << std::endl;
-		std::cout << std::boolalpha << iss.eof() << std::endl;
+		//	std::cout << std::boolalpha << !iss.fail() << std::endl;
+		//	std::cout << std::boolalpha << iss.eof() << std::endl;
 		if (!iss.fail() && iss.eof())
 		{
 			return value;
