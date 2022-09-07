@@ -1,7 +1,7 @@
 
 /*
 * ファイルに現れるコメントを無視して出力する。
-* 
+*
 */
 
 #define _USE_MATH_DEFINES
@@ -63,11 +63,11 @@ void removeComments(std::istream& is, std::ostream& os)
 		{
 			break;
 		}
-		for (std::size_t i = 0; i < line.length() - 1; ++i)
+		for (std::size_t i = 1; i < line.length(); ++i)
 		{
-			if (line.at(i) == '/' && line.at(i + 1) == '/')
+			if (line.at(i - 1) == '/' && line.at(i) == '/')
 			{
-				startCommentPos = i;
+				startCommentPos = i - 1;
 				break;
 			}
 		}
@@ -81,6 +81,7 @@ void removeComments(std::istream& is, std::ostream& os)
 			newText += line.substr(0, startCommentPos);
 			startCommentPos = std::string::npos;
 		}
+		newText += '\n';
 	}
 
 	/*
@@ -91,23 +92,24 @@ void removeComments(std::istream& is, std::ostream& os)
 	startCommentPos = std::string::npos;
 	while (1)
 	{
-		for (std::size_t i = 0; i < newText.length() - 1; ++i)
+		for (std::size_t i = 1; i < newText.length(); ++i)
 		{
-			if (startCommentPos == std::string::npos && newText.at(i) == '/' && newText.at(i + 1) == '*')
+			if (startCommentPos == std::string::npos && newText.at(i - 1) == '/' && newText.at(i) == '*')
 			{
-				startCommentPos = i;
+				startCommentPos = i - 1;
 				continue;
 			}
 
-			if (endCommentPos == std::string::npos && newText.at(i) == '*' && newText.at(i + 1) == '/')
+			if (endCommentPos == std::string::npos && newText.at(i - 1) == '*' && newText.at(i) == '/')
 			{
-				endCommentPos = i + 1;
+				endCommentPos = i;
 			}
 		}
 
 		if (startCommentPos != std::string::npos && endCommentPos != std::string::npos)
 		{
-			newText = (newText.substr(0, startCommentPos - 1) + newText.substr(endCommentPos + 1));
+			std::size_t pos = (startCommentPos >= 1) ? startCommentPos - 1 : 0;
+			newText = (newText.substr(0, pos) + newText.substr(endCommentPos + 1)) ;
 
 			startCommentPos = std::string::npos;
 			endCommentPos = std::string::npos;
