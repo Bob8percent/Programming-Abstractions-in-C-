@@ -1,3 +1,6 @@
+/*
+* 平均値を求める
+*/
 double mean(Vector<double>& data)
 {
 	double sum = 0;
