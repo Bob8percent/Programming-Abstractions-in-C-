@@ -40,21 +40,29 @@ void fixCounts(const Vector<bool>& mines, const int raw, const int column, Vecto
 			//	中央のグリッド
 			sum += mines[centerIdx];
 			//	左上
-			if (i != 0 && j != 0)					sum += mines[centerIdx - column - 1];
+			if (i != 0 && j != 0)
+				sum += mines[centerIdx - column - 1];
 			//	上
-			if (i != 0)								sum += mines[centerIdx - column];
+			if (i != 0)
+				sum += mines[centerIdx - column];
 			//	右上
-			if (i != 0 && j != (column - 1))		sum += mines[centerIdx - column + 1];
+			if (i != 0 && j != (column - 1))
+				sum += mines[centerIdx - column + 1];
 			//	左
-			if (j != 0)								sum += mines[centerIdx - 1];
+			if (j != 0)
+				sum += mines[centerIdx - 1];
 			//	右
-			if (j != (column - 1))					sum += mines[centerIdx + 1];
+			if (j != (column - 1))
+				sum += mines[centerIdx + 1];
 			//	左下
-			if (i != (raw - 1) && j != 0)			sum += mines[centerIdx + column - 1];
+			if (i != (raw - 1) && j != 0)
+				sum += mines[centerIdx + column - 1];
 			//	下
-			if (i != (raw - 1))						sum += mines[centerIdx + column];
+			if (i != (raw - 1))
+				sum += mines[centerIdx + column];
 			//	右下
-			if (i != (raw - 1) && j != (column - 1))sum += mines[centerIdx + column + 1];
+			if (i != (raw - 1) && j != (column - 1))
+				sum += mines[centerIdx + column + 1];
 
 			counts[centerIdx] = sum;
 		}
