@@ -43,7 +43,7 @@ void roll(Stack<char>& stack, int n, int k)
 		return;
 	}
 
-	std::string rotatedData(n, '0');
+	std::string rotatedData(n, '0');	//　回転後の文字の並び。文字列の末がスタックの底となる
 	int shift = n - k % n;
 	for (int i = shift; i < n + shift; ++i)
 	{
