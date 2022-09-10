@@ -1,6 +1,6 @@
 
 /*
-* getReal()の実装
+* checkoutLineSimulationの実装
 */
 
 #define _USE_MATH_DEFINES
