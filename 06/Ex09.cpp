@@ -5,7 +5,7 @@
 #include "Rational.h"
 
 void runRPN();
-Rational stringToRational(const std::string& str);
+int stringToInteger(const std::string& str);
 
 int main()
 {
@@ -24,7 +24,7 @@ void runRPN()
 		char ch = toupper(line.at(0));
 		if (isdigit(ch))
 		{
-			operands.push(stringToRational(line));
+			operands.push(Rational(stringToInteger(line)));
 		}
 		else if (ch == 'Q')
 		{
@@ -58,16 +58,16 @@ void runRPN()
 	}
 }
 
-Rational stringToRational(const std::string& str)
+int stringToInteger(const std::string& str)
 {
 	std::istringstream iss(str);
 	int value;
 	iss >> value >> std::skipws;
 	if (!iss.fail() && iss.eof())
 	{
-		return Rational(value);
+		return value;
 	}
 
-	std::cerr << "ERROR : Rational stringToRational(const std::string& str)"
-		<< " : 文字列を有理数に変換できません" << std::endl;
+	std::cerr << "ERROR : int stringToInteger(const std::string& str)"
+		<< " : 文字列を整数に変換できません" << std::endl;
 }
