@@ -15,7 +15,7 @@ int main()
 
 int gcd(int x, int y)
 {
-	if (x < 0 || y < 0)
+	if (x <= 0 || y <= 0)
 	{
 		std::cerr << "ERROR : int gcd(int x, int y) : xまたはyが負になっています" << std::endl;
 		std::exit(EXIT_FAILURE);
