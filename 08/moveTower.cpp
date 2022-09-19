@@ -7,30 +7,16 @@
 #include "Library/queue.h"
 #include "Library/map.h"
 
-int countHanoiMoves(int n);
-void moveTower(int n, int& count);
+void moveTower(int n, char start, char finish, char tmp);
 
 int main()
 {
-	std::cout << std::setw(3) << "n" << std::setw(20) << "countHanoiMoves" << std::endl << std::endl;
-
-	for (int i = 1; i <= 10; ++i)
-	{
-		std::cout << std::setw(3) << i << std::setw(15) << countHanoiMoves(i) << std::endl;
-	}
-}
-
-int countHanoiMoves(int n)
-{
-	int count = 0;
-	moveTower(n, count);
-	return count;
+	std::cout << moveTower(3, 'A', 'B', 'C') << std::endl;
 }
 
 //	nはディスクの数。ディスク番号とは無関係であることに注意
-void moveTower(int n, int& count)
+void moveTower(int n, char start, char finish, char tmp)
 {
-	++count;
 	if (n <= 0)
 	{
 		std::cerr << "ERROR : void moveTower(int n, char start, char finish, char tmp) : "
@@ -39,7 +25,7 @@ void moveTower(int n, int& count)
 	}
 	else if (n == 1)
 	{
-		//	1をstartからfinishに移動
+		//	startからfinishに移動
 		std::cout << "[ " << start << " >> " << finish << " ]";
 	}
 	else
