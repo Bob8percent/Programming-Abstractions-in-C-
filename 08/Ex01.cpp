@@ -39,15 +39,15 @@ void moveTower(int n, int& count)
 	else if (n == 1)
 	{
 		//	1をstartからfinishに移動
-		//std::cout << "[ " << 1 << " : " << start << " >> " << finish << " ]";
+		//std::cout << "[ " << start << " >> " << finish << " ]";
 	}
 	else
 	{
-		//	1~n-1をstartからtmpに移動
+		//	上n-1個をstartからtmpに移動
 		moveTower(n - 1, count);
-		//	nをstartからfinishに移動
-		//std::cout << "[ " << n << " : " << start << " >> " << finish << " ]";
-		//	1~n-1をtmpからfinishに移動
+		//	最下のディスクをstartからfinishに移動
+		//std::cout << "[ " << start << " >> " << finish << " ]";
+		//	上n-1個をtmpからfinishに移動
 		moveTower(n - 1, count);
 	}
 
