@@ -24,6 +24,7 @@ int main()
 	std::cout << count << std::endl;
 }
 
+//	以下の二つの関数の違いはやっていることは同じだが、順番が違う
 bool subsetSumExists(const Set<int>& set, int target, int& count)
 {
 	++count;
