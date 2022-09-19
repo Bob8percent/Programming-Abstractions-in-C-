@@ -39,7 +39,7 @@ void moveTower(int n, int& count)
 	}
 	else if (n == 1)
 	{
-		//	1をstartからfinishに移動
+		//	startからfinishに移動
 		//std::cout << "[ " << start << " >> " << finish << " ]";
 	}
 	else
