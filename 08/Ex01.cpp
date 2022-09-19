@@ -27,6 +27,7 @@ int countHanoiMoves(int n)
 	return count;
 }
 
+//	nはディスクの数。ディスク番号とは無関係であることに注意
 void moveTower(int n, int& count)
 {
 	++count;
@@ -46,7 +47,7 @@ void moveTower(int n, int& count)
 		//	上n-1個をstartからtmpに移動
 		moveTower(n - 1, count);
 		//	最下のディスクをstartからfinishに移動
-		//std::cout << "[ " << start << " >> " << finish << " ]";
+		//std::cout << "[ " << start << " >> " << finish << " ]";	// moveTower(1, count)でもOK
 		//	上n-1個をtmpからfinishに移動
 		moveTower(n - 1, count);
 	}
