@@ -8,45 +8,55 @@
 #include "Library/map.h"
 #include "Library/stack.h"
 
-void moveTower(int n, Stack<int>& start, Stack<int>& finish, Stack<int>& tmp);
+struct Task
+{
+	int n;	//	startからfinishへ移動させるディスクの数
+	char start;
+	char finish;
+	char tmp;
+};
+
+void moveTower(Task& task);
 
 int main()
 {
-	int n = 10;
-	Stack<int> start;
-	for (int i = n; i >= 1; --i) start.push(i);
-	Stack<int> finish;
-	Stack<int> tmp;
-	moveTower(n, start, finish, tmp);
-
-	std::cout << std::boolalpha << start.isEmpty() << std::endl;
-	while (!finish.isEmpty())
-	{
-		std::cout << finish.pop() << " ";
-	}
-	std::cout << std::endl << std::boolalpha << tmp.isEmpty() << std::endl;
+	Task task = { 3,'A','B','C' };
+	moveTower(task);
 }
 
-void moveTower(int n, Stack<int>& start, Stack<int>& finish, Stack<int>& tmp)
+void moveTower(Task& task)
 {
-	if (n < 0)
+	Stack<Task> tasks;
+	tasks.push(task);
+	while (!tasks.isEmpty())
 	{
-		std::cerr << "ERROR : void moveTower(int n, char start, char finish, char tmp) : "
-			<< "nが負です" << std::endl;
-		std::exit(EXIT_FAILURE);
-	}
-	else if (n == 0)
-	{
-		return;
-	}
-	else
-	{
-		//	1~n-1をstartからtmpに移動
-		moveTower(n - 1, start, tmp, finish);
-		//	nをstartからfinishに移動
-		finish.push(start.pop());
-		//	1~n-1をtmpからfinishに移動
-		moveTower(n - 1, tmp, finish, start);
+		Task currentTask = tasks.pop();
+		
+		if (currentTask.n <= 0)
+		{
+			std::cerr << "ERROR : void moveTower(int n, char start, char finish, char tmp) : "
+				<< "nが負です" << std::endl;
+			std::exit(EXIT_FAILURE);
+		}
+		else if (currentTask.n == 1)
+		{
+			//	1をstartからfinishに移動
+			std::cout << "[ " << currentTask.start << " >> " << currentTask.finish << " ]";
+		}
+		else
+		{
+			//	1~n-1をstartからtmpに移動するタスク
+			Task t1 = { currentTask.n - 1,currentTask.start,currentTask.tmp,currentTask.finish };
+			//	nをstartからfinishに移動する
+			Task t2 = { 1,currentTask.start,currentTask.finish,currentTask.tmp };
+			//	1~n-1をtmpからfinishに移動するタスク
+			Task t3 = { currentTask.n - 1,currentTask.tmp,currentTask.finish,currentTask.start };
+
+			//	処理の順番はt1から
+			tasks.push(t3);
+			tasks.push(t2);
+			tasks.push(t1);
+		}
 	}
 
 }
