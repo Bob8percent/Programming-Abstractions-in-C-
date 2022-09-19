@@ -11,7 +11,7 @@ void moveTower(int n, char start, char finish, char tmp);
 
 int main()
 {
-	std::cout << moveTower(3, 'A', 'B', 'C') << std::endl;
+	moveTower(3, 'A', 'B', 'C');
 }
 
 //	nはディスクの数。ディスク番号とは無関係であることに注意
@@ -31,11 +31,11 @@ void moveTower(int n, char start, char finish, char tmp)
 	else
 	{
 		//	上n-1個をstartからtmpに移動
-		moveTower(n - 1, count);
+		moveTower(n - 1, start, tmp, finish);
 		//	最下のディスクをstartからfinishに移動
 		std::cout << "[ " << start << " >> " << finish << " ]";	// moveTower(1, count)でもOK
 		//	上n-1個をtmpからfinishに移動
-		moveTower(n - 1, count);
+		moveTower(n - 1, tmp, finish, start);
 	}
 
 }
