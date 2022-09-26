@@ -14,7 +14,7 @@
 #include "Maze.h"
 
 bool findQueenPos(Vector<bool>& nQueen, const int N);
-bool findQueenPos(Vector<bool>& nQueen, const int N, int depth);
+bool findQueenPos(Vector<bool>& nQueen, int row, const int N);	//	各行ずつ探索 > 各マスずつ探索
 bool isDuplicate(Vector<bool>& nQueen, const int idx, const int N);
 void drawPixels(Vector<bool>& pixels, const int nRows, const int nCols);
 
@@ -32,26 +32,28 @@ bool findQueenPos(Vector<bool>& nQueen, const int N)
 {
 	if (nQueen.size() != N * N) return false;
 
-	return findQueenPos(nQueen, N, N);
+	return findQueenPos(nQueen, 0, N);
 }
 
-bool findQueenPos(Vector<bool>& nQueen, const int N, int depth)
+bool findQueenPos(Vector<bool>& nQueen, int row, const int N)
 {
-	if (depth == 0)
+	if (row == N)
 	{
 		return true;
 	}
 
-	for (int i = 0; i < N * N; ++i)
+	//	row行の各列における場所を探す
+	for (int i = 0; i < N; ++i)
 	{
-		if (!isDuplicate(nQueen, i, N))
+		int idx = i + row * N;
+		if (!isDuplicate(nQueen, idx, N))
 		{
-			nQueen[i] = true;
-			if (findQueenPos(nQueen, N, depth - 1))
+			nQueen[idx] = true;
+			if (findQueenPos(nQueen, row + 1, N))
 			{
 				return true;
 			}
-			nQueen[i] = false;
+			nQueen[idx] = false;
 		}
 	}
 
