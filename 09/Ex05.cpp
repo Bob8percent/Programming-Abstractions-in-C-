@@ -13,6 +13,7 @@
 #include "Library/set.h"
 #include "Maze.h"
 
+//　各列、各行にクイーンは一つだけおかれることを利用して計算量を減らす
 bool findQueenPos(Vector<bool>& nQueen, const int N);
 bool findQueenPos(Vector<bool>& nQueen, int row, const int N);	//	各行ずつ探索 > 各マスずつ探索
 bool isDuplicate(Vector<bool>& nQueen, const int idx, const int N);
