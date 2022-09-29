@@ -13,9 +13,9 @@
 #include "Library/set.h"
 #include "Domino.h"
 
-int cutStock(Vector<int>& requests, int stockLength);
-int subCutStock(Vector<int>& requests, Vector<int>& stocks, int stockLength);
-
+int cutStock(Vector<int>& requests, const int stockLength);
+int subCutStock(Vector<int>& requests, Vector<int>& stocks, const int stockLength);
+void cutShockAllOrder(Vector<int>& requests, Vector<int>& order, int& stockNum, const int stockLength, const int minStockNum);
 bool isAllUsed(const Vector<int>& requests);
 
 int main()
@@ -26,22 +26,51 @@ int main()
 	std::cout << cutStock(requests, stockLength) << std::endl;
 }
 
-int cutStock(Vector<int>& requests, int stockLength)
+int cutStock(Vector<int>& requests, const int stockLength)
 {
+	int sum = 0;
 	for (int i = 0; i < requests.size(); ++i)
 	{
-		if (requests[i] < 0 || requests[i] > stockLength)return -1;
+		int val = requests[i];
+		if (val < 0 || stockLength < val)return -1;
+		sum += val;
 	}
 
-	while (1)
-	{
-		Vector<int> newReq=	
-	}
-	Vector<int> stocks;
-	return subCutStock(requests, stocks, stockLength);
+	int minStockNum = sum / stockLength + (sum % stockLength != 0);
+
+	int stockNum = requests.size();
+	Vector<int> order;
+	cutShockAllOrder(requests, order, stockNum, stockLength, minStockNum);
+
+	return stockNum;
 }
 
-int subCutStock(Vector<int>& requests, Vector<int>& stocks, int stockLength)
+void cutShockAllOrder(Vector<int>& requests, Vector<int>& order, int& stockNum, const int stockLength, const int minStockNum)
+{
+	if (order.size() == requests.size())
+	{
+		Vector<int> stocks;
+		Vector<int> tmp = order;
+		int num = subCutStock(tmp, stocks, stockLength);
+		stockNum = (stockNum > num) ? num : stockNum;
+		return;
+	}
+
+	for (int i = 0; i < requests.size(); ++i)
+	{
+		int tmp = requests[i];
+		if (tmp != -1)
+		{
+			requests[i] = -1;
+			cutShockAllOrder(requests, order += tmp, stockNum, stockLength, minStockNum);
+			requests[i] = tmp;
+			if (stockNum == minStockNum)return;
+			order.remove(order.size() - 1);
+		}
+	}
+}
+
+int subCutStock(Vector<int>& requests, Vector<int>& stocks, const int stockLength)
 {
 	if (isAllUsed(requests))return stocks.size();
 
@@ -58,29 +87,23 @@ int subCutStock(Vector<int>& requests, Vector<int>& stocks, int stockLength)
 		if (requests[i] != -1)
 		{
 			int tmp = requests[i];
+			bool isAddNew = true;
 			if (stocks[stocks.size() - 1] + tmp <= stockLength)
 			{
 				stocks[stocks.size() - 1] += tmp;
+				isAddNew = false;
 			}
-			else continue;
+			else
+			{
+				stocks += tmp;
+			}
 			requests[i] = -1;
 			int result = subCutStock(requests, stocks, stockLength);
 			if (result != -1)return result;
 
 			requests[i] = tmp;
-			stocks[stocks.size() - 1] -= tmp;
-		}
-	}
-
-	//	新しくストックを作る
-	for (int i = 0; i < requests.size(); ++i)
-	{
-		if (requests[i] != -1)
-		{
-			int tmp = requests[i];
-			stocks += tmp;
-			requests[i] = -1;
-			return;
+			if (isAddNew)stocks.remove(stocks.size() - 1);
+			else stocks[stocks.size() - 1] -= tmp;
 		}
 	}
 
