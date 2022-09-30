@@ -162,7 +162,9 @@ int SimpleNim::evaluatePosition(int depth)
 int SimpleNim::evaluateStaticPosition()
 {
 	//	(mNCoin%4==1)でCOM(/HUMAN)の番に回ってきたらHUMAN(/COM)は絶対負ける
-	//	negamax法における静的評価はleafがCOMのときは評価*(-1)を返し、HUMANのときは評価を返せばいい(今回そうなっている)
+	//	negamax法における静的評価はleafがCOMのときは評価*(-1)を返し、HUMANのときは評価を返せばいい(今回もそうなっている)
+	//	なぜなら、leafがCOMのときは評価が最大となる選択肢を、HUMANのときは評価が最小となる選択肢を選びたいが、
+	//	findBetterMoveではこのうちleafがHUMANのときのみしか考慮されておらず、COMのときにも対応できるように静的評価を工夫しないといけない
 	return (mNCoin % 4 == 1) ? LOSING_POSITION : WINNING_POSITION;
 }
 
