@@ -10,6 +10,7 @@ struct Move
 	int nTaken;
 };
 
+//	TODO : 少し細かいけど、終了条件を残り枚数0以下にして、現在のターンの人が負けというやり方のほうがシンプルでよかった。
 class SimpleNim
 {
 public:
