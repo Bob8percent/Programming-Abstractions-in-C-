@@ -4,7 +4,7 @@
 #include <sstream>
 #include "Library/random.h"
 
-const int MAX_DEPTH = 4;	//	偶数(HUMANで終わるように)
+const int MAX_DEPTH = 4;
 const int WINNING_POSITION = 1000;
 const int LOSING_POSITION = -WINNING_POSITION;
 
