@@ -31,6 +31,8 @@ private:
 	bool isValid(int nGetCoin);
 
 	//	Move処理(ターン制ゲームに共通した処理)
+	//	本来であれば以下の処理をベースクラスとして別に作ってNimクラスがこれを継承する形となるだろう(たぶん)が、
+	//	練習のためこれらをNim.hに記述している
 	Move getUserMove();
 	Move getComputerMove();
 	void makeMove(const Move& move);
