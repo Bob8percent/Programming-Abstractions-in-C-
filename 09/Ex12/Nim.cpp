@@ -162,8 +162,7 @@ int SimpleNim::evaluatePosition(int depth)
 int SimpleNim::evaluateStaticPosition()
 {
 	//	(mNCoin%4==1)でCOM(/HUMAN)の番に回ってきたらHUMAN(/COM)は絶対負ける
-	//	以下の式は現在のターンがHUMAN/COMによらない(一括に使える)
-	//	簡単のためにnegamax法よりminimaxを使うべきかもしれない(今回はnegamaxを使った)
+	//	negamax法における静的評価はleafがCOMのときは評価*(-1)を返し、HUMANのときは評価を返せばいい(今回そうなっている)
 	return (mNCoin % 4 == 1) ? LOSING_POSITION : WINNING_POSITION;
 }
 
