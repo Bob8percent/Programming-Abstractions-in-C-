@@ -13,7 +13,8 @@
 #include "Library/map.h"
 #include "Library/set.h"
 
-
+//	merge()はO(N), mergeSort()の再起呼び出しはO(logN)なので、
+//	マージソートはO(NlogN)
 void mergeSort(Vector<int>& vec);
 void merge(Vector<int>& vec, Vector<int>& v1, Vector<int>& v2);
 
