@@ -13,7 +13,7 @@
 #include "Library/map.h"
 #include "Library/set.h"
 
-//  O(logN)のraiseToPower
+//  分割統治法によるO(logN)のraiseToPower
 double raiseToPower(double x, int n, int& count);
 
 int main()
