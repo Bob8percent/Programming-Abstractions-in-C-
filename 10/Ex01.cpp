@@ -32,6 +32,7 @@ int main()
 	std::cout << count << std::endl << std::endl;
 }
 
+//	x^2n=x^n*x^nへの分割ごとに一回の計算で実現しO(logN)を実現
 double raiseToPower(double x, int n, int& count)
 {
 	++count;
