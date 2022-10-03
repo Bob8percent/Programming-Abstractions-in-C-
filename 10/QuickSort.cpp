@@ -42,7 +42,7 @@ void quickSort(Vector<int>& vec, int lh, int rh)
 	}
 	std::cout << std::endl;
 	if (lh >= rh)return;
-	int start = lh + 1, end = rh;
+	int start = lh, end = rh;
 	int pivot = lh;
 	++lh;
 	while (1)
