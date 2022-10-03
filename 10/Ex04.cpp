@@ -20,8 +20,6 @@ void selectionSort(Vector<int>& vec);
 void mergeSort(Vector<int>& vec);
 void merge(Vector<int>& vec, Vector<int>& v1, Vector<int>& v2);
 
-void generateRandInteger(Vector<int>& vec, int n);
-
 void Ex04Sort(Vector<int>& vec);
 
 int main()
@@ -136,6 +134,7 @@ void merge(Vector<int>& vec, Vector<int>& v1, Vector<int>& v2)
 	}
 }
 
+//	範囲が固定されているときO(N)にできる
 void Ex04Sort(Vector<int>& vec)
 {
 	int N = vec.size();
