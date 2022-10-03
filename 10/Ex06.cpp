@@ -17,6 +17,7 @@
 
 //	昇順であるほどクイックソートは分割しずらくなり遅くなるのがデメリットだったが、
 //	pivotを最初、中間、最後の中央値にすることである程度解決できる
+//	ランダムな数列のソートについてはあまり変わらない
 double calcCurrentTime();
 void quickSort(Vector<int>& vec, int lh, int rh);
 void new_quickSort(Vector<int>& vec, int lh, int rh);
