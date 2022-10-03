@@ -15,8 +15,9 @@
 #include "Library/set.h"
 #include <ctime>
 
-//	選択ソートはサイズが小さいときに力を発揮するので、
+//	選択ソートはサイズが小さいとき(5くらい？)に力を発揮するので、
 //	サイズの小さいときは選択ソート、大きいときはクイックソートを使うハイブリッド戦略を実装する
+//	Ex06の改良版クイックソートが少し速くなった
 double calcCurrentTime();
 
 void hybridSort(Vector<int>& vec, const int crossOverPoint);
@@ -27,27 +28,38 @@ int main()
 {
 	Vector<int> vec;
 	Vector<int> N;
-	N += 10, 100, 1000, 10000,100000;
-	Vector<int> crossOverPoints;
-	crossOverPoints += 10, 50, 100, 200, 500, 1000;
+	N += 10, 100, 1000, 10000, 100000, 1000000;
+	const int crossOverPoint = 5;
 
-	std::cout << "ハイブリッドソート";
 	setRandomSeed(1);
-	for (int k = 0; k < crossOverPoints.size(); ++k)
+	std::cout << "クイックソート" << std::endl;
+	for (int i = 0; i < N.size(); ++i)
 	{
-		std::cout << " COP:" << crossOverPoints[k] << std::endl;
-		for (int i = 0; i < N.size(); ++i)
+		vec.clear();
+		for (int j = 0; j < N[i]; ++j)
 		{
-			vec.clear();
-			for (int j = 0; j < N[i]; ++j)
-			{
-				vec += randomInteger(0, 10000);
-			}
-			double start = calcCurrentTime();
-			hybridSort(vec, 1000);
-			double end = calcCurrentTime();
-			std::cout << std::setw(7) << N[i] << "  " << std::setw(7) << end - start << "秒" << std::endl;
+			vec += randomInteger(0, 10000);
 		}
+		double start = calcCurrentTime();
+		hybridSort(vec, crossOverPoint);
+		double end = calcCurrentTime();
+		std::cout << std::setw(7) << N[i] << "  " << std::setw(7) << end - start << "秒" << std::endl;
+	}
+
+	setRandomSeed(1);
+	std::cout << "ハイブリッドソート";
+	std::cout << " COP:" << crossOverPoint << std::endl;
+	for (int i = 0; i < N.size(); ++i)
+	{
+		vec.clear();
+		for (int j = 0; j < N[i]; ++j)
+		{
+			vec += randomInteger(0, 10000);
+		}
+		double start = calcCurrentTime();
+		hybridSort(vec, crossOverPoint);
+		double end = calcCurrentTime();
+		std::cout << std::setw(7) << N[i] << "  " << std::setw(7) << end - start << "秒" << std::endl;
 	}
 }
 
@@ -136,4 +148,3 @@ void h_selectionSort(Vector<int>& vec, int lh, int rh)
 		vec[min_idx] = tmp;
 	}
 }
-
