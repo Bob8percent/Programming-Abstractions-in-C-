@@ -15,8 +15,8 @@
 #include "Library/set.h"
 #include <ctime>
 
-//	昇順であるほどクイックソートは分割しずらくなり遅くなるのがデメリットだったが、
-//	pivotを最初、中間、最後の中央値にすることである程度解決できる
+//	昇順であるほどクイックソートは分割しずらくなり遅くなる、スタックオーバーフローがデメリットだったが、
+//	pivotを最初、中間、最後の中央値にすることで解決できる...ソート済みの場合も常に半分に分割できる
 //	ランダムな数列のソートについてはあまり変わらない
 double calcCurrentTime();
 void quickSort(Vector<int>& vec, int lh, int rh);
@@ -26,7 +26,7 @@ int main()
 {
 	Vector<int> vec;
 	Vector<int> N;
-	N += 10, 100, 1000;	//	ソート済みの配列を扱う場合、10000以上はスタックオーバーフローしてしまうので未確認
+	N += 10, 100, 1000;	//	ソート済みの配列を扱う場合、前者は10000以上はスタックオーバーフローしてしまうので未確認
 
 	std::cout << "最初の要素をpivotにした" << std::endl;
 	setRandomSeed(1);
@@ -46,6 +46,7 @@ int main()
 
 	std::cout << "最初、中間、最後の要素の中央値をpivotにした" << std::endl;
 	setRandomSeed(1);
+	N+=10000,100000,1000000;
 	for (int i = 0; i < N.size(); ++i)
 	{
 		vec.clear();
