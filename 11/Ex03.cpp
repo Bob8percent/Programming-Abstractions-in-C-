@@ -53,7 +53,7 @@ int _stringToInteger(const std::string& str, int base) {
 
 	int val = 0;
 	int digit = 1;
-	for (std::size_t i = 0; i < str.length(); ++i) {
+	for (std::size_t i = str.length() - 1; i >= 0; --i) {
 		char ch = str.at(i);
 		if (isdigit(ch)) {
 			val += digit * (ch - '0');
