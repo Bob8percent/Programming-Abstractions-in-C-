@@ -10,17 +10,21 @@ struct Tower {
 	Tower* link;
 };
 
-//	Link-Listをつくる
 Tower* createBeaconOfGondor();
 Tower* createTower(const std::string& name, Tower* link);
+void freeTower(Tower* tp);
 
 int main() {
 	Tower* tp = createBeaconOfGondor();
+	Tower* startTp = tp;
 
 	while (tp) {
 		std::cout << tp->name << std::endl;
 		tp = tp->link;
 	}
+
+	//	解放
+	freeTower(startTp);
 }
 
 Tower* createBeaconOfGondor() {
@@ -44,3 +48,12 @@ Tower* createTower(const std::string& name, Tower* link) {
 
 	return tower;
 }
+
+void freeTower(Tower* tp) {
+	while (tp) {
+		Tower* next = tp->link;
+		delete tp;
+		tp = next;
+	}
+}
+
