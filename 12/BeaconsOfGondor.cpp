@@ -10,6 +10,7 @@ struct Tower {
 	Tower* link;
 };
 
+//	Link-Listをつくる
 Tower* createBeaconOfGondor();
 Tower* createTower(const std::string& name, Tower* link);
 
