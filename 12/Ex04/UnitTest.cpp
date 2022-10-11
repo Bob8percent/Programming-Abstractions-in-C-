@@ -58,6 +58,9 @@ void intArrayTest() {
 	//IntArray zero(0);
 
 	IntArray a(10);
+	
+	//IntArray a1(a);
+	//a1 = a;
 
 	assert(a.size() == 10);
 	assert(a.get(5) == 0);
