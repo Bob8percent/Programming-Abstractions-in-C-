@@ -17,6 +17,8 @@ int main() {
 		std::cout << a[i] << " ";
 	}
 	std::cout << std::endl;
+	
+	delete[] a;
 }
 
 int* createIndexArray(int n) {
