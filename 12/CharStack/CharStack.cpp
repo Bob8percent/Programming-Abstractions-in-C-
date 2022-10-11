@@ -14,18 +14,19 @@ CharStack::~CharStack() {
 }
 
 CharStack& CharStack::operator=(const CharStack& src) {
-	if (this = &src) {
+	if (this != &src) {	
+		//	右辺と左辺が同じとき、ここでelementsをdeleteしてしまうとdeepCopy()で解放したアドレスを参照してしまう事故が起こる
 		delete[] elements;
 		deepCopy(src);
 	}
 	return *this;
 }
 
-int CharStack::size() {
+int CharStack::size() const {
 	return count;
 }
 
-bool CharStack::isEmpty() {
+bool CharStack::isEmpty() const {
 	return count <= 0;
 }
 
@@ -46,7 +47,7 @@ char CharStack::pop() {
 	return elements[--count];
 }
 
-char CharStack::peek() {
+char CharStack::peek() const {
 	if (isEmpty()) {
 		std::cerr << "ERROR : char CharStack::peek() : スタックが空です" << std::endl;
 		std::exit(EXIT_FAILURE);
@@ -65,7 +66,6 @@ void CharStack::expandCapacity() {
 }
 
 void CharStack::deepCopy(const CharStack& src) {
-	std::cout << "deepCopy" << std::endl;
 	elements = new char[src.capacity];
 	for (int i = 0; i < src.count; ++i) {
 		elements[i] = src.elements[i];
