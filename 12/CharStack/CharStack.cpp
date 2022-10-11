@@ -4,8 +4,21 @@ CharStack::CharStack() {
 	elements = new char[capacity];
 	count = 0;
 }
+
+CharStack::CharStack(const CharStack& src) {
+	deepCopy(src);
+}
+
 CharStack::~CharStack() {
 	delete[] elements;
+}
+
+CharStack& CharStack::operator=(const CharStack& src) {
+	if (this == &src) {
+		delete[] elements;
+		deepCopy(src);
+	}
+	return *this;
 }
 
 int CharStack::size() {
@@ -51,3 +64,12 @@ void CharStack::expandCapacity() {
 	delete[] oldElements;
 }
 
+void CharStack::deepCopy(const CharStack& src) {
+	std::cout << "deepCopy" << std::endl;
+	elements = new char[src.capacity];
+	for (int i = 0; i < src.count; ++i) {
+		elements[i] = src.elements[i];
+	}
+	count = src.count;
+	capacity = src.capacity;
+}
