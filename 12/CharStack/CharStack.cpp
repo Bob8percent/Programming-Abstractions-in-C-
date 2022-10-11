@@ -14,7 +14,7 @@ CharStack::~CharStack() {
 }
 
 CharStack& CharStack::operator=(const CharStack& src) {
-	if (this == &src) {
+	if (this = &src) {
 		delete[] elements;
 		deepCopy(src);
 	}
