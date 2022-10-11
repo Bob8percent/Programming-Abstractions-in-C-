@@ -13,5 +13,9 @@ public:
 private:
 	int n;
 	int* elements;
+
+	//	コピー、代入を禁止
+	IntArray(const IntArray& src) {}
+	void operator=(const IntArray& src) {}
 };
 
