@@ -23,7 +23,8 @@ int main() {
 	onetwo.rightDots = 2;
 	Domino* array = new Domino[2];
 	std::cout << "--main()--" << std::endl;
-	std::cout << "array : " << array << std::endl;
+	std::cout << "&array[0] : " << &array[0] << std::endl;
+	std::cout << "&array[1] : " << &array[1] << std::endl;
 	std::cout << "&array : " << &array << std::endl;
 	std::cout << "&onetwo : " << &onetwo << std::endl;
 	initPair(array, onetwo);
