@@ -18,10 +18,6 @@ bool CharStack::isEmpty() {
 
 void CharStack::clear() {
 	count = 0;
-	for (int i = INITIAL_CAPACITY; i < capacity; ++i) {
-		delete (elements + i);
-	}
-	capacity = INITIAL_CAPACITY;
 }
 
 void CharStack::push(char ch) {
