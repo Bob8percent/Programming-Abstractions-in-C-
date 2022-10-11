@@ -5,7 +5,10 @@ class CharStack
 {
 public:
 	CharStack();
+	CharStack(const CharStack& src);
 	~CharStack();
+
+	CharStack& operator=(const CharStack& src);
 
 	int size();
 	bool isEmpty();
@@ -20,8 +23,9 @@ private:
 	static const int INITIAL_CAPACITY = 10;
 	char* elements;
 	int count;		//	要素数
-	int capacity;		//	メモリを確保せずに格納できる要素数の最大
+	int capacity;	//	メモリを確保せずに格納できる要素数の最大
 
 	void expandCapacity();
+	void deepCopy(const CharStack& src);
 };
 
