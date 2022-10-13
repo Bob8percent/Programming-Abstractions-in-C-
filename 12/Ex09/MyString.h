@@ -1,6 +1,10 @@
 #pragma once
 #include <string>
 
+//結論：
+//	固定長の文字列配列として扱うならば効率がいい。
+//	でも、コピーや代入、+やsubstrといったものはコストがかかるので使用注意。
+
 class MyString
 {
 public:
