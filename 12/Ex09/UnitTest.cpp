@@ -139,6 +139,11 @@ void myStringTest() {
 	assert(str < newStr3);
 	assert(!(str >= newStr3));
 
+	std::cout << newStr1 + newStr2 << std::endl;
+	newStr1 += newStr3;
+	std::cout << newStr1 << std::endl;
+	assert(newStr1.length() == 14);
+
 	std::cout << std::endl << "MyString unit test is succeeded." << std::endl;
 }
 #endif
