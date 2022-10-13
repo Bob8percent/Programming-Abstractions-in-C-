@@ -45,6 +45,8 @@ std::size_t MyString::length() const {
 	return count;
 }
 
+//	+とsubstrに関して、
+//	短い配列ほど効率がいいけど、どちらにせよMyStringを宣言時と戻り値で2回コピーするからコストは高そう
 MyString MyString::substr(std::size_t start, std::size_t n/* = 0*/) {
 	if (!(0 <= start && start < count)) {
 		std::cerr << "ERROR : MyString MyString::substr(std::size_t start, std::size_t n = std::string::npos) : "
@@ -73,8 +75,7 @@ MyString MyString::substr(std::size_t start, std::size_t n/* = 0*/) {
 }
 
 MyString MyString::operator+(const MyString& src) const {
-	std::size_t len = length();
-	std::size_t strLen = len + src.length();
+	std::size_t strLen = count + src.count;
 
 	MyString str;
 	std::size_t strCapacity = INITIAL_CAPACITY;
@@ -85,19 +86,19 @@ MyString MyString::operator+(const MyString& src) const {
 	str.count = strLen;
 	str.capacity = strCapacity;
 	for (std::size_t i = 0; i < strLen; ++i) {
-		if (i < len)str[i] = elements[i];
-		else str[i] = src[i - len];
+		if (i < count)str[i] = elements[i];
+		else str[i] = src[i - count];
 	}
 	str.elements[strLen] = '\0';
 	return str;
 }
 
+//	srcの長さが常に1のときの償却分析はO(1)なので効率はいいかも
 MyString& MyString::operator+=(const MyString& src) {
 	std::size_t newLen = count + src.count;
-	
 
 	if (newLen >= capacity) {
-		while(newLen >= capacity) capacity *= 2;
+		capacity += src.capacity;
 		char* newElements = new char[capacity];
 		for (std::size_t i = 0; i < newLen; ++i) {
 			if (i < count)newElements[i] = elements[i];
