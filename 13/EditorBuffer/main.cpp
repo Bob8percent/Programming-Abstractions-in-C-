@@ -11,6 +11,7 @@
 #include "EditorBuffer.h"
 
 //	以下の関数：クラス化したほうがよさそうだけども
+//	controllerとview
 void executeCommand(EditorBuffer& eb, const std::string& line);
 void displayBuffer(EditorBuffer& eb);
 void printHelp();
