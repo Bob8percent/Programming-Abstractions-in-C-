@@ -1,27 +1,19 @@
 #include "EditorBuffer.h"
 
 EditorBuffer::EditorBuffer() {
-	//	地点0を作成
-	//	ここで作らずcursorとstartにnullptrを設定しても、
-	//	末尾にダミーセルを作ることになる。末尾よりも0に作った方がシンプルだ
-	Cell* cell0 = new Cell;
-	cell0->ch = -1;
-	cell0->link = nullptr;
-
-	//	初期位置は地点0
-	cursor = new Cell;
-	cursor->link = cell0;
-	cursor->ch = -1;
-	start = new Cell;
-	start->link = cell0;
-	start->ch = -1;
+	//	地点0の前にダミーセルを作る。
+	//	cursorが指しているCellの後ろに挿入、削除する。
+	//	これを作らないと削除がO(1)にできない。
+	Cell* dummyCell = new Cell;
+	dummyCell->ch = -1;
+	dummyCell->link = nullptr;
+	cursor = dummyCell;
+	start = dummyCell;
 }
 
 EditorBuffer::~EditorBuffer() {
-	delete cursor;
-
 	Cell* cell = start;
-	while (!cell->link) {
+	while (cell) {
 		Cell* currentCell = cell;
 		cell = cell->link;
 		delete currentCell;
@@ -30,18 +22,19 @@ EditorBuffer::~EditorBuffer() {
 
 //	O(1)
 void EditorBuffer::moveCursorForward() {
-	if (cursor->link->link) {
-		cursor->link = cursor->link->link;
+	if (cursor->link) {
+		cursor = cursor->link;
 	}
 }
 
+//	O(N)
 void EditorBuffer::moveCursorBackward() {
-	Cell* cell = start->link;
+	Cell* cell = start;
 
 	//	カーソル位置より前方のポインタを見つける
 	while (cell) {
-		if (cell->link == cursor->link) {
-			cursor->link = cell;
+		if (cell->link == cursor) {
+			cursor = cell;
 			return;
 		}
 		cell = cell->link;
@@ -50,18 +43,13 @@ void EditorBuffer::moveCursorBackward() {
 
 //	O(1)
 void EditorBuffer::moveCursorToStart() {
-	cursor->link = start->link;
+	cursor = start;
 }
 
 //	O(N)
 void EditorBuffer::moveCursorToEnd() {
-	Cell* cell = start->link;
-	while (1) {
-		if (!cell->link) {
-			cursor->link = cell;
-			return;
-		}
-		cell = cell->link;
+	while (cursor->link) {
+		cursor = cursor->link;
 	}
 }
 
@@ -69,23 +57,25 @@ void EditorBuffer::moveCursorToEnd() {
 void EditorBuffer::insertCharacter(char ch) {
 	Cell* newCell = new Cell;
 	newCell->ch = ch;
-	newCell->link = cursor->link->link;
-	cursor->link->link = newCell;
+	newCell->link = cursor->link;
+	cursor->link = newCell;
+	cursor = newCell;	//	cursorの移動
 }
 
+//	O(1)
 void EditorBuffer::deleteCharacter() {
-	Cell* dCell = cursor->link->link;
-	if (dCell) {
-		//	dCellが末尾ではないとき
+	//	cursor->linkを消す
+	if (cursor->link) {
+		Cell* dCell = cursor->link;
+		cursor->link = dCell->link;
 		delete dCell;
-		cursor->link->link = cursor->link->link->link;
 	}
 }
 
 //	O(N)
 std::string EditorBuffer::getText() const {
 	std::string str;
-	Cell* cell = start->link->link;
+	Cell* cell = start->link;	//	dammyCellの後ろから開始
 	while (cell) {
 		str += cell->ch;
 		cell = cell->link;
