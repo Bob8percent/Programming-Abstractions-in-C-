@@ -34,8 +34,8 @@ std::size_t InsideTwoStacks::size(STACK_TYPE type) const {
 }
 
 bool InsideTwoStacks::isEmpty(STACK_TYPE type) const {
-	if (type == BEFORE)return beforeCount == 0;
-	else if(type == AFTER)return afterCount == 0;
+	if (type == BEFORE)return beforeCount <= 0;
+	else if(type == AFTER)return afterCount <= 0;
 
 	std::cerr << "ERROR : bool InsideTwoStacks::isEmpty(STACK_TYPE type) const : "
 		<< "引数typeにBEFOREまたはAFTER以外を指定しています" << std::endl;
@@ -55,7 +55,7 @@ void InsideTwoStacks::clear(STACK_TYPE type){
 void InsideTwoStacks::push(char ch, STACK_TYPE type) {
 	if (beforeCount + afterCount >= capacity) expandCapcity();
 	if (type == BEFORE)elements[beforeCount++] = ch;
-	else if (type == AFTER)elements[capacity - 1 - afterCount++] = ch;
+	else if (type == AFTER)elements[capacity - 1 - (afterCount++)] = ch;
 	else {
 		std::cerr << "ERROR : void InsideTwoStacks::push(char ch, STACK_TYPE type) : "
 			<< "引数typeにBEFOREまたはAFTER以外を指定しています" << std::endl;
@@ -66,7 +66,7 @@ void InsideTwoStacks::push(char ch, STACK_TYPE type) {
 char InsideTwoStacks::pop(STACK_TYPE type) {
 	if (!isEmpty(type)) {
 		if (type == BEFORE) return elements[--beforeCount];
-		else if (type == AFTER) return elements[capacity - 1 - --afterCount];
+		else if (type == AFTER)return elements[capacity - 1 - (--afterCount)];
 		std::cerr << "ERROR : char InsideTwoStacks::pop(STACK_TYPE type) : "
 			<< "引数typeにBEFOREまたはAFTER以外を指定しています" << std::endl;
 		std::exit(EXIT_FAILURE);
@@ -93,10 +93,11 @@ char InsideTwoStacks::peek(STACK_TYPE type) const {
 }
 
 void InsideTwoStacks::expandCapcity() {
+	std::size_t oldCapacity = capacity;
 	capacity *= 2;
 	char* newElements = new char[capacity];
 	for (std::size_t i = 0; i < beforeCount; ++i)newElements[i] = elements[i];
-	for (std::size_t i = 0; i < afterCount; ++i)newElements[capacity - i - 1] = elements[capacity - i - 1];
+	for (std::size_t i = 0; i < afterCount; ++i)newElements[capacity - i - 1] = elements[oldCapacity - i - 1];
 	delete[] elements;
 	elements = newElements;
 }
