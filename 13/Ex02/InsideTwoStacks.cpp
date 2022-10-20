@@ -80,7 +80,7 @@ char InsideTwoStacks::pop(STACK_TYPE type) {
 char InsideTwoStacks::peek(STACK_TYPE type) const {
 	if (!isEmpty(type)) {
 		if (type == BEFORE) return elements[beforeCount - 1];
-		else if (type == AFTER) return elements[capacity - 1 - afterCount - 1];
+		else if (type == AFTER) return elements[capacity - afterCount];
 		std::cerr << "ERROR : char InsideTwoStacks::peek(STACK_TYPE type) const : "
 			<< "引数typeにBEFOREまたはAFTER以外を指定しています" << std::endl;
 		std::exit(EXIT_FAILURE);
