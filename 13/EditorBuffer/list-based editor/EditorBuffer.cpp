@@ -2,8 +2,8 @@
 
 EditorBuffer::EditorBuffer() {
 	//	地点0の前にダミーセルを作る。
+	//	ダミーセルを作らずにstart, cursorをnullptrにして開始することもできる(Ex11)がnullptrかどうかの区別が常に発生して大変
 	//	cursorが指しているCellの後ろに挿入、削除する。
-	//	これを作らないと削除がO(1)にできない。
 	Cell* dummyCell = new Cell;
 	dummyCell->ch = -1;
 	dummyCell->link = nullptr;
