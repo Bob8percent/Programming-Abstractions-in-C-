@@ -67,6 +67,7 @@ void Queue<ValueType>::clear() {
 	}
 	head = nullptr;
 	tail = nullptr;
+	
 }
 
 template <typename ValueType>
