@@ -1,0 +1,758 @@
+#include "UnitTest.h"
+#include <cassert>
+#include <iostream>
+
+#if 0
+#include "CharStack.h"
+
+void charStackTest() {
+	CharStack cstk;
+	assert(cstk.size() == 0);
+	assert(cstk.isEmpty());
+
+	cstk.push('A');
+	assert(!cstk.isEmpty());
+	assert(cstk.size() == 1);
+	assert(cstk.peek() == 'A');
+	cstk.push('B');
+	assert(cstk.peek() == 'B');
+	assert(cstk.size() == 2);
+	assert(cstk.pop() == 'B');
+	assert(cstk.size() == 1);
+	assert(cstk.peek() == 'A');
+	cstk.push('C');
+	assert(cstk.size() == 2);
+	assert(cstk.pop() == 'C');
+	assert(cstk.peek() == 'A');
+	assert(cstk.pop() == 'A');
+	assert(cstk.size() == 0);
+
+	for (char ch = 'A'; ch <= 'Z'; ++ch) {
+		cstk.push(ch);
+	}
+	assert(cstk.size() == 26);
+
+	for (char ch = 'Z'; ch >= 'A'; --ch) {
+		assert(cstk.pop() == ch);
+	}
+	assert(cstk.isEmpty());
+
+	for (char ch = 'A'; ch <= 'Z'; ++ch) {
+		cstk.push(ch);
+	}
+	assert(cstk.size() == 26);
+
+	cstk.clear();
+	assert(cstk.size() == 0);
+	cstk.clear();
+	assert(cstk.size() == 0);
+
+	std::cout << "CharStack unit test succeeded." << std::endl;
+}
+#endif
+
+#if 0
+#include "IntArray.h"
+
+void intArrayTest() {
+	//IntArray zero();
+
+	IntArray a(10);
+	
+	//a1 = a;
+
+	assert(a.size() == 10);
+	assert(a.get(5) == 0);
+
+	//a.get(10);
+
+	a.put(6, 66);
+	assert(a.get(6) == 66);
+
+	//a.put(10, 100);
+
+	//a[10] = 100;
+
+	a[5] = 55;
+	assert(a[5] == 55);
+	assert(a.get(5) == 55);
+
+	IntArray ca(15);
+	ca = a;
+	assert(ca[5] == 55);
+	assert(ca[6] == 66);
+	//ca[14];
+
+	std::cout << "IntArray unit test succeeded." << std::endl;
+}
+#endif
+
+#if 0
+#include "MyString.h"
+
+void myStringTest() {
+	std::string s = "abcde";
+	MyString str(s);
+	std::cout << "--debug0--" << std::endl;
+	std::cout << str << std::endl;
+	assert(str.length() == 5);
+
+	std::cout << "--debug1--" << std::endl;
+	MyString cstr(str);
+	std::cout << cstr << std::endl;
+	std::cout << cstr.toString() << std::endl;
+	MyString astr;
+	astr = str;
+	std::cout << astr << std::endl;
+	std::cout << astr.toString() << std::endl;
+
+	std::cout << "--debug2--" << std::endl;
+	std::cout << str.substr(0) << std::endl;
+	std::cout << str.substr(1, 2) << std::endl;
+	std::cout << str.substr(2, 3) << std::endl;
+	std::cout << str.substr(2, 10) << std::endl;
+	std::cout << str.substr(1, 0) << std::endl;
+	//std::cout << str.substr(-1, 1) << std::endl;
+
+	assert(str.substr(0).length() == 5);
+	assert(str.substr(1, 2).length() == 2);
+	assert(str.substr(2, 3).length() == 3);
+	assert(str.substr(2, 10).length() == 3);
+
+	std::cout << "--debug3--" << std::endl;
+	std::cout << str + astr << std::endl;
+	cstr += astr;
+	//std::cout << cstr << std::endl;
+	//assert(cstr[5] == 'a');
+	//assert(cstr[6] == 'b');
+	//cstr[11];
+
+	assert(str == astr);
+	assert(!(str != astr));
+	MyString newStr1("ABfjl");
+	MyString newStr2("abcdf");
+	MyString newStr3("abcdeffff");
+	assert(str > newStr1);
+	assert(!(str <= newStr1));
+	assert(str < newStr2);
+	assert(!(str >= newStr2));
+	assert(str < newStr3);
+	assert(!(str >= newStr3));
+
+	std::cout << newStr1 + newStr2 << std::endl;
+	newStr1 += newStr3;
+	std::cout << newStr1 << std::endl;
+	assert(newStr1.length() == 14);
+
+	std::cout << std::endl << "MyString unit test is succeeded." << std::endl;
+}
+#endif
+
+#if 0
+#include "Rational.h"
+
+void rationalTest() {
+	Rational a(1, 3);
+	Rational b(1, 4);
+
+	std::cout << "--debug1--" << std::endl;
+	std::cout << a + b << "==7/12" << std::endl;
+	std::cout << a - b << "==1/12" << std::endl;
+	std::cout << b + b << "==1/2" << std::endl;
+	std::cout << a / b << "==4/3" << std::endl;
+	std::cout << a * b << "==1/12" << std::endl;
+	std::cout << a + 4 << "==13/3" << std::endl;
+	std::cout << a - 4 << "==-11/3" << std::endl;
+	std::cout << a * 4 << "==4/3" << std::endl;
+	std::cout << a / 4 << "==1/12" << std::endl;
+	std::cout << a * 3 << "==1/1" << std::endl;
+	std::cout << 4 + a << "==13/3" << std::endl;
+	std::cout << 4 - a << "==-11/3" << std::endl;
+	std::cout << 4 * a << "==4/3" << std::endl;
+	std::cout << 4 / a << "==1/12" << std::endl;
+	std::cout << 3 * a << "==1/1" << std::endl;
+	std::cout << ++a << "==4/3" << std::endl;
+	std::cout << a++ << "==4/3" << std::endl;
+	std::cout << a << "==7/3" << std::endl;
+	std::cout << --b << "==-3/4" << std::endl;
+	std::cout << b-- << "==-3/4" << std::endl;
+	std::cout << b << "==-7/4" << std::endl;
+	//a += b;
+	//a /= b;
+	//a -= b;
+	//a *= b;
+	//a += 2;
+	//a /= 2;
+	//a -= 2;
+	//a *= 3;
+	//std::cout << a << std::endl;
+
+	Rational c(1, -3);
+	Rational d(-1, 4);
+	std::cout << "--debug2--" << std::endl;
+	std::cout << c + d << "==-7/12" << std::endl;
+	std::cout << c - d << "==-1/12" << std::endl;
+	std::cout << d + d << "==-1/2" << std::endl;
+	std::cout << c / d << "==4/3" << std::endl;
+	std::cout << c * d << "==1/12" << std::endl;
+	std::cout << c + 4 << "==11/3" << std::endl;
+	std::cout << c - 4 << "==-13/3" << std::endl;
+	std::cout << c * 4 << "==-4/3" << std::endl;
+	std::cout << d / 4 << "==-1/16" << std::endl;
+	std::cout << d * 3 << "==-3/4" << std::endl;
+	std::cout << 4 + c << "==11/3" << std::endl;
+	std::cout << 4 - c << "==-13/3" << std::endl;
+	std::cout << 4 * c << "==-4/3" << std::endl;
+	std::cout << 4 / d << "==-1/16" << std::endl;
+	std::cout << 3 * d << "==-3/4" << std::endl;
+	//c += d;
+	//c /= d;
+	//c -= d;
+	//c *= d;
+	//std::cout << c << std::endl;
+
+	assert(c < d);
+	assert(c <= d);
+	assert(!(c > d));
+	assert(!(c >= d));
+	assert(c != d);
+	Rational e(1, 4);
+	d *= -1;
+	assert(e == d);
+
+	std::cout << "Rational unit test is succeeded." << std::endl;
+	
+}
+#endif
+
+#if 0
+#include "EditorBuffer.h"
+
+void editorBufferTest() {
+	EditorBuffer eb;
+	eb.deleteCharacter();
+
+	for (char ch = 'a'; ch <= 'z'; ++ch) {
+		eb.insertCharacter(ch);
+	}
+	assert(eb.getCursor() == 26);
+	assert(eb.getText() == "abcdefghijklmnopqrstuvwxyz");
+	
+	for (int i = 0; i < 50; ++i)eb.moveCursorForward();
+	for (int i = 0; i < 50; ++i)eb.moveCursorBackward();
+	for (int i = 0; i < 20; ++i)eb.moveCursorForward();
+	for (int i = 0; i < 10; ++i)eb.moveCursorBackward();
+	assert(eb.getCursor() == 10);
+	assert(eb.getText() == "abcdefghijklmnopqrstuvwxyz");
+
+	for (int i = 0; i < 50; ++i)eb.deleteCharacter();
+	assert(eb.getText() == "abcdefghij");
+	for (char ch = 'k'; ch <= 'z'; ++ch)eb.insertCharacter(ch);
+	assert(eb.getText() == "abcdefghijklmnopqrstuvwxyz");
+
+	for (int i = 0; i < 10; ++i)eb.moveCursorBackward();
+	assert(eb.getCursor() == 16);
+	eb.moveCursorToEnd();
+	assert(eb.getCursor() == 26);
+	eb.moveCursorToStart();
+	assert(eb.getCursor() == 0);
+
+	////	一時的にprivate部分をpublicにして解放テスト
+	////	これを行うとデストラクタが呼ばれたときに当然エラーになる
+	//eb.moveCursorToEnd();
+	//int len = eb.getCursor();
+	//eb.deleteBuffer();
+	//int trueNum = 0;
+	//for (int i = 0; i < eb.debugArray.size(); ++i)if (eb.debugArray[i])++trueNum;
+	//assert(1 + len == trueNum);
+
+	//	以下 succeeded.
+	//EditorBuffer eb2;
+	//for (char ch = 'a'; ch <= 'h'; ++ch) {
+	//	eb2.insertCharacter(ch);
+	//}
+	//assert(eb2.twoStacks.size(BEFORE) == 8);
+	//assert(eb2.twoStacks.size(AFTER) == 0);
+	//assert(eb2.twoStacks.capacity == 10);
+
+	//eb2.moveCursorToStart();
+	//assert(eb2.twoStacks.size(BEFORE) == 0);
+	//assert(eb2.twoStacks.size(AFTER) == 8);
+	//assert(eb2.twoStacks.capacity == 10);
+
+
+	std::cout << "editorBuffer unit test is succeeded." << std::endl;
+}
+#endif
+
+#if 0
+#include "_Stack.h"
+void stackTest() {
+	//	char型
+	Stack<char> stk;
+	assert(stk.size() == 0);
+	assert(stk.isEmpty());
+
+	stk.push('A');
+	assert(!stk.isEmpty());
+	assert(stk.size() == 1);
+	assert(stk.peek() == 'A');
+	stk.push('B');
+	assert(stk.peek() == 'B');
+	assert(stk.size() == 2);
+	assert(stk.pop() == 'B');
+	assert(stk.size() == 1);
+	assert(stk.peek() == 'A');
+	stk.push('C');
+	assert(stk.size() == 2);
+	assert(stk.pop() == 'C');
+	assert(stk.peek() == 'A');
+	assert(stk.pop() == 'A');
+	assert(stk.size() == 0);
+
+	for (char ch = 'A'; ch <= 'Z'; ++ch) {
+		stk.push(ch);
+	}
+	assert(stk.size() == 26);
+
+	for (char ch = 'Z'; ch >= 'A'; --ch) {
+		assert(stk.pop() == ch);
+	}
+	assert(stk.isEmpty());
+
+	for (char ch = 'A'; ch <= 'Z'; ++ch) {
+		stk.push(ch);
+	}
+	assert(stk.size() == 26);
+
+	stk.clear();
+	assert(stk.size() == 0);
+	stk.clear();
+	assert(stk.size() == 0);
+
+	//	int型
+	Stack<int> s;
+	assert(s.size() == 0);
+	assert(s.isEmpty());
+
+	s.push(0);
+	assert(!s.isEmpty());
+	assert(s.size() == 1);
+	assert(s.peek() == 0);
+	s.push(1);
+	assert(s.peek() == 1);
+	assert(s.size() == 2);
+	assert(s.pop() == 1);
+	assert(s.size() == 1);
+	assert(s.peek() == 0);
+	s.push(2);
+	assert(s.size() == 2);
+	assert(s.pop() == 2);
+	assert(s.peek() == 0);
+	assert(s.pop() == 0);
+	assert(s.size() == 0);
+
+	for (int i = 1; i <= 26; ++i) {
+		s.push(i);
+	}
+	assert(s.size() == 26);
+
+	for (int i = 26; i >= 1; --i) {
+		assert(s.pop() == i);
+	}
+	assert(s.isEmpty());
+
+	for (int i = 1; i <= 26; ++i) {
+		s.push(i);
+	}
+	assert(s.size() == 26);
+
+	s.clear();
+	assert(s.size() == 0);
+	s.clear();
+	assert(s.size() == 0);
+
+	std::cout << "Stack unit test succeeded." << std::endl;
+
+}
+#endif
+
+#if 0
+#include "_Queue.h"
+void queueTest() {
+	//	char型
+	Queue<char> qc;
+	assert(qc.size() == 0);
+	assert(qc.isEmpty());
+
+	qc.enqueue('A');
+	assert(!qc.isEmpty());
+	assert(qc.size() == 1);
+	assert(qc.peek() == 'A');
+	qc.enqueue('B');
+	assert(qc.peek() == 'A');
+	assert(qc.size() == 2);
+	assert(qc.dequeue() == 'A');
+	assert(qc.size() == 1);
+	assert(qc.peek() == 'B');
+	qc.enqueue('C');
+	assert(qc.size() == 2);
+	assert(qc.dequeue() == 'B');
+	assert(qc.peek() == 'C');
+	assert(qc.dequeue() == 'C');
+	assert(qc.size() == 0);
+
+	for (char ch = 'A'; ch <= 'Z'; ++ch) {
+		qc.enqueue(ch);
+	}
+	assert(qc.size() == 26);
+	qc.reverse();
+
+	for (char ch = 'Z'; ch >= 'A'; --ch) {
+		assert(qc.dequeue() == ch);
+	}
+	assert(qc.isEmpty());
+
+	for (char ch = 'A'; ch <= 'Z'; ++ch) {
+		qc.enqueue(ch);
+	}
+	assert(qc.size() == 26);
+
+	qc.clear();
+	assert(qc.size() == 0);
+	qc.clear();
+	assert(qc.size() == 0);
+
+	//	int型
+	Queue<int> qi;
+	assert(qi.size() == 0);
+	assert(qi.isEmpty());
+
+	qi.enqueue(0);
+	assert(!qi.isEmpty());
+	assert(qi.size() == 1);
+	assert(qi.peek() == 0);
+	qi.enqueue(1);
+	assert(qi.peek() == 0);
+	assert(qi.size() == 2);
+	assert(qi.dequeue() == 0);
+	assert(qi.size() == 1);
+	assert(qi.peek() == 1);
+	qi.enqueue(2);
+	assert(qi.size() == 2);
+	assert(qi.dequeue() == 1);
+	assert(qi.peek() == 2);
+	assert(qi.dequeue() == 2);
+	assert(qi.size() == 0);
+
+	for (int i = 1; i <= 26; ++i) {
+		qi.enqueue(i);
+	}
+	assert(qi.size() == 26);
+	qi.reverse();
+
+	for (int i = 26; i >= 1; --i) {
+		assert(qi.dequeue() == i);
+	}
+	assert(qi.isEmpty());
+
+	for (int i = 1; i <= 26; ++i) {
+		qi.enqueue(i);
+	}
+	assert(qi.size() == 26);
+
+	qi.clear();
+	assert(qi.size() == 0);
+	qi.clear();
+	assert(qi.size() == 0);
+
+	std::cout << "Queue unit test succeeded." << std::endl;
+
+}
+#endif
+
+
+#if 0
+#include "_PQueue.h"
+void pQueueTest() {
+	//	char型
+	PQueue<char> qc;
+	assert(qc.size() == 0);
+	assert(qc.isEmpty());
+
+	qc.enqueue('A', 10);
+	assert(!qc.isEmpty());
+	assert(qc.size() == 1);
+	assert(qc.peek() == 'A');
+	qc.enqueue('B', 20);
+	assert(qc.peek() == 'A');
+	assert(qc.size() == 2);
+	assert(qc.dequeue() == 'A');
+	assert(qc.size() == 1);
+	assert(qc.peek() == 'B');
+	qc.enqueue('C', 0);
+	assert(qc.size() == 2);
+	assert(qc.dequeue() == 'C');
+	assert(qc.peek() == 'B');
+	assert(qc.dequeue() == 'B');
+	assert(qc.size() == 0);
+
+	for (char ch = 'A'; ch <= 'Z'; ++ch) {
+		qc.enqueue(ch, ch * 1.0);
+	}
+	assert(qc.size() == 26);
+	qc.reverse();
+
+	for (char ch = 'Z'; ch >= 'A'; --ch) {
+		assert(qc.dequeue() == ch);
+	}
+	assert(qc.isEmpty());
+
+	for (char ch = 'A'; ch <= 'Z'; ++ch) {
+		qc.enqueue(ch, ch * 1.0);
+	}
+	assert(qc.size() == 26);
+
+	qc.clear();
+	assert(qc.size() == 0);
+	qc.clear();
+	assert(qc.size() == 0);
+
+	//	int型
+	PQueue<int> qi;
+	assert(qi.size() == 0);
+	assert(qi.isEmpty());
+
+	qi.enqueue(0, 10);
+	assert(!qi.isEmpty());
+	assert(qi.size() == 1);
+	assert(qi.peek() == 0);
+	qi.enqueue(1, 20);
+	assert(qi.peek() == 0);
+	assert(qi.size() == 2);
+	assert(qi.dequeue() == 0);
+	assert(qi.size() == 1);
+	assert(qi.peek() == 1);
+	qi.enqueue(2, 30);
+	assert(qi.size() == 2);
+	assert(qi.dequeue() == 1);
+	assert(qi.peek() == 2);
+	assert(qi.dequeue() == 2);
+	assert(qi.size() == 0);
+
+	for (int i = 1; i <= 26; ++i) {
+		qi.enqueue(i, i * 1.0);
+	}
+	assert(qi.size() == 26);
+	qi.reverse();
+
+	for (int i = 26; i >= 1; --i) {
+		assert(qi.dequeue() == i);
+	}
+	assert(qi.isEmpty());
+
+	for (int i = 1; i <= 26; ++i) {
+		qi.enqueue(i, i * 1.0);
+	}
+	assert(qi.size() == 26);
+
+	qi.clear();
+	assert(qi.size() == 0);
+	qi.clear();
+	assert(qi.size() == 0);
+
+	std::cout << "Queue unit test succeeded." << std::endl;
+
+}
+#endif
+
+#if 0
+#include "_Vector.h"
+
+void vectorTest() {
+	//	int型
+	Vector<int> vin(11, 5);
+	for (int i = 0; i < vin.size(); ++i) {
+		assert(vin[i] == 5);
+	}
+
+	Vector<int> vi;
+	assert(vi.isEmpty());
+	for (int i = 1; i <= 25; ++i)vi.add(i);
+	assert(vi.size() == 25);
+	vi.insert(10, 1000);
+
+	assert(vi[10] == 1000);
+	assert(vi[9] == 10);
+	assert(vi[11] == 11);
+	assert(vi.size() == 26);
+
+	vi.remove(10);
+	assert(vi[9] == 10);
+	assert(vi[10] == 11);
+	assert(vi.size() == 25);
+
+	Vector<int> vic = vi;
+	for (int i = 0; i < 25; ++i)assert(vic[i] == i + 1);
+	assert(vic.size() == 25);
+
+	vic[10] = 100;
+	assert(vic[10] == 100);
+	assert(vi[10] != 100);
+
+	vi.clear();
+	assert(vi.isEmpty());
+	assert(vi.size() == 0);
+	assert(!vic.isEmpty());
+
+	//	char型
+	Vector<char> vcn(11, 'A');
+	for (int i = 0; i < vcn.size(); ++i) {
+		assert(vcn[i] == 'A');
+	}
+
+	Vector<char> vc;
+	assert(vc.isEmpty());
+	for (char ch = 'A'; ch <= 'Z'; ++ch)vc.add(ch);
+	assert(vc.size() == 26);
+	vc.insert(10, 'i');
+	assert(vc[10] == 'i');
+	assert(vc[9] == 'J');
+	assert(vc[11] == 'K');
+	assert(vc.size() == 27);
+
+	vc.remove(10);
+	assert(vc[9] == 'J');
+	assert(vc[10] == 'K');
+	assert(vc.size() == 26);
+
+	Vector<char> vcc = vc;
+	for (char ch = 'A'; ch <= 'Z'; ++ch)assert(vcc[ch - 'A'] == ch);
+	assert(vcc.size() == 26);
+
+	vcc[10] = 't';
+	assert(vcc[10] == 't');
+	assert(vc[10] != 't');
+
+	vc.clear();
+	assert(vc.isEmpty());
+	assert(vc.size() == 0);
+	assert(!vcc.isEmpty());
+
+	std::cout << "Vector unit test succeeded." << std::endl;
+}
+#endif
+
+#if 1
+#include "_Grid.h"
+
+void gridTest() {
+	//	int型
+	Grid<int> gi;
+	gi.resize(5, 4);
+	assert(gi.inBounds(3, 3));
+	assert(!gi.inBounds(3, 4));
+	assert(!gi.inBounds(5, 2));
+	assert(gi.numCols() == 4);
+	assert(gi.numRows() == 5);
+	for (int i = 0; i < gi.numRows(); ++i) {
+		for (int j = 0; j < gi.numCols(); ++j) {
+			gi[i][j] = i + j;
+		}
+	}
+	for (int i = 0; i < gi.numRows(); ++i) {
+		for (int j = 0; j < gi.numCols(); ++j) {
+			assert(gi[i][j] == i + j);
+		}
+	}
+
+	Grid<int> gi2(5, 4);
+	assert(gi2.inBounds(3, 3));
+	assert(!gi2.inBounds(3, 4));
+	assert(!gi2.inBounds(5, 2));
+	assert(gi2.numCols() == 4);
+	assert(gi2.numRows() == 5);
+	for (int i = 0; i < gi2.numRows(); ++i) {
+		for (int j = 0; j < gi2.numCols(); ++j) {
+			gi2[i][j] = i + j;
+		}
+	}
+	for (int i = 0; i < gi2.numRows(); ++i) {
+		for (int j = 0; j < gi2.numCols(); ++j) {
+			assert(gi2[i][j] == i + j);
+		}
+	}
+
+	Grid<int> gi2c = gi2;
+	assert(gi2c.inBounds(3, 3));
+	assert(!gi2c.inBounds(3, 4));
+	assert(!gi2c.inBounds(5, 2));
+	assert(gi2c.numCols() == 4);
+	assert(gi2c.numRows() == 5);
+	for (int i = 0; i < gi2c.numRows(); ++i) {
+		for (int j = 0; j < gi2c.numCols(); ++j) {
+			gi2c[i][j] = i + j;
+		}
+	}
+	for (int i = 0; i < gi2c.numRows(); ++i) {
+		for (int j = 0; j < gi2c.numCols(); ++j) {
+			assert(gi2c[i][j] == i + j);
+		}
+	}
+
+	//	char型
+	Grid<char> gc;
+	gc.resize(5, 4);
+	assert(gc.inBounds(3, 3));
+	assert(!gc.inBounds(3, 4));
+	assert(!gc.inBounds(5, 2));
+	assert(gc.numCols() == 4);
+	assert(gc.numRows() == 5);
+	for (int i = 0; i < gc.numRows(); ++i) {
+		for (int j = 0; j < gc.numCols(); ++j) {
+			gc[i][j] = (i + j + 'A');
+		}
+	}
+	for (int i = 0; i < gc.numRows(); ++i) {
+		for (int j = 0; j < gc.numCols(); ++j) {
+			assert(gc[i][j] == (i + j + 'A'));
+		}
+	}
+
+	Grid<char> gc2(5, 4);
+	assert(gc2.inBounds(3, 3));
+	assert(!gc2.inBounds(3, 4));
+	assert(!gc2.inBounds(5, 2));
+	assert(gc2.numCols() == 4);
+	assert(gc2.numRows() == 5);
+	for (int i = 0; i < gc2.numRows(); ++i) {
+		for (int j = 0; j < gc2.numCols(); ++j) {
+			gc2[i][j] = i + j;
+		}
+	}
+	for (int i = 0; i < gc2.numRows(); ++i) {
+		for (int j = 0; j < gc2.numCols(); ++j) {
+			assert(gc2[i][j] == i + j);
+		}
+	}
+
+	Grid<char> gc2c(5, 4);
+	assert(gc2c.inBounds(3, 3));
+	assert(!gc2c.inBounds(3, 4));
+	assert(!gc2c.inBounds(5, 2));
+	assert(gc2c.numCols() == 4);
+	assert(gc2c.numRows() == 5);
+	for (int i = 0; i < gc2c.numRows(); ++i) {
+		for (int j = 0; j < gc2c.numCols(); ++j) {
+			gc2c[i][j] = i + j;
+		}
+	}
+	for (int i = 0; i < gc2c.numRows(); ++i) {
+		for (int j = 0; j < gc2c.numCols(); ++j) {
+			assert(gc2c[i][j] == i + j);
+		}
+	}
+
+	std::cout << "Grid unit test is succeeded." << std::endl;
+}
+#endif
