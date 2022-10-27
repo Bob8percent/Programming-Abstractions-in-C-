@@ -128,6 +128,7 @@ BigInt BigInt::operator+ (const BigInt& src) const{
 }
 
 BigInt BigInt::operator* (const BigInt& src) const{
+	//	TODO : srcを素因数分解してから計算すれば計算量減らせそう
 	BigInt num;
 	BigInt one(1);
 	for (BigInt count; count != src; count = count + one) {
