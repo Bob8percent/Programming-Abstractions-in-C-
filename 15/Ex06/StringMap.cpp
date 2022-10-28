@@ -108,43 +108,29 @@ void StringMap::reHash() {
 	}
 }
 
-void StringMap::hide(const std::string& key) {
+void StringMap::add(const std::string& key, const std::string& value) {
 	int i = hashCode(key) % nBuckets;
-	Cell* cp = findCell(i, key);
-	if (!cp) {
-		std::cerr << "ERROR : void StringMap::hide(const std::string& key) : "
-			<< "keyが見つかりません" << std::endl;
-		std::exit(EXIT_FAILURE);
-	}
-	else{
-		//	cp->linkにvalueを避難させる.findCellについて、keyが同じのとき、早く見つけたcellのポインタを返すことを利用。
-		if (cp->link && cp->link->key == key) return;	//	hide済み
 
-		Cell* newCell = new Cell;
-		newCell->key = cp->key;
-		newCell->value = cp->value;
-		cp->value = "";
-		newCell->link = cp->link;
-		cp->link = newCell;
-	}
+	Cell* newCell = new Cell;
+	newCell->key = key;
+	newCell->value = value;
+
+	newCell->link = buckets[i];
+	buckets[i] = newCell;
 }
 
-void StringMap::restore(const std::string& key) {
+void StringMap::remove(const std::string& key) {
 	int i = hashCode(key) % nBuckets;
-	Cell* cp = findCell(i, key);
-	if (!cp) {
+	if (!buckets[i] || buckets[i]->key != key) {
 		std::cerr << "ERROR : void StringMap::restore(const std::string& key) : "
-			<< "keyが見つかりません" << std::endl;
+			<< "keyをキーに持つセルは、バケットの先頭に存在しません" << std::endl;
 		std::exit(EXIT_FAILURE);
 	}
 	else {
-		if (cp->link && cp->link->key == key) {
-			//	hideされているとき
-			Cell* hideCell = cp->link;
-			cp->value = hideCell->value;
-			cp->link = hideCell->link;
-			delete hideCell;
-		}
+		Cell* hideCell = buckets[i]->link;
+		buckets[i]->value = hideCell->value;
+		buckets[i]->link = hideCell->link;
+		delete hideCell;
 	}
 }
 
