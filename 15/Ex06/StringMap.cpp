@@ -127,10 +127,9 @@ void StringMap::remove(const std::string& key) {
 		std::exit(EXIT_FAILURE);
 	}
 	else {
-		Cell* hideCell = buckets[i]->link;
-		buckets[i]->value = hideCell->value;
-		buckets[i]->link = hideCell->link;
-		delete hideCell;
+		Cell* dCell = buckets[i];
+		buckets[i] = buckets[i]->link;
+		delete dCell;
 	}
 }
 
