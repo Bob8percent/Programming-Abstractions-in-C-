@@ -22,5 +22,5 @@ private:
 	Vector<Pair> pairs;
 
 	int findKey(const std::string& key) const;
+	int findKey(const std::string& key, int start, int end) const;
 };
-
