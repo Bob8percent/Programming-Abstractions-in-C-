@@ -82,7 +82,7 @@ void StringMap::reHash() {
 	int oldNum = nBuckets;
 
 	while ((count / (1.0 * nBuckets)) > REHASH_THRESHOLD) {
-		++nBuckets;
+		nBuckets *= 2;	//	O(1)にするため。細かい数学は償却分析をしよう。
 	}
 	
 	//	新しくハッシュマップを作成
