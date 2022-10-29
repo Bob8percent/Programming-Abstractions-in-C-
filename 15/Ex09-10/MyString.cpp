@@ -30,7 +30,7 @@ void StringMap::put(const std::string& key, const std::string& value) {
 	int cp = findCell(i, key);
 	if (cp != -1) elements[cp].value = value;
 	else {
-		//	空のインデックスにセルを作成
+		//	iに最近の空のインデックスにセルを作成
 		for (int k = 0; k < capacity; ++k) {
 			int index = (i + k) % capacity;
 			if (elements[index].key == "") {
@@ -73,6 +73,10 @@ int StringMap::findCell(int bucket, const std::string& key) const {
 	for (int i = 0; i < capacity; ++i) {
 		int index = (bucket + i) % capacity;
 		if (elements[index].key == key)return index;
+
+		//	空白が現れたことによって別のバケットに移ったことがわかるので、keyをもつcellが存在しないことがわかる
+		//	よってこれ以上の探索は意味ない
+		else if (elements[index].key == "")return -1;	
 	}
 
 	return -1;
@@ -113,7 +117,29 @@ void StringMap::remove(const std::string& key) {
 	int cp = findCell(i, key);
 
 	if (cp != -1) {
-		elements[cp].key = "";	//	valueは変更する必要ない
+		//	cpの隣のインデックスが空のときは削除するだけでいい
+		if (elements[(cp + 1) % capacity].key == "") {
+			elements[cp].key = "";	//	valueは変更する必要ない
+		}
+		else {
+			//	cpと同じバケットで最後のインデックスのものを見つけて入れ替える
+			//	参考：https://en.wikipedia.org/wiki/Linear_probing
+			int last = cp;
+			for (int k = 2; k < capacity; ++k) {
+				int index = (cp + k) % capacity;
+
+				if (elements[index].key == "")break;
+
+				int ci = hashCode(elements[index].key) % capacity;
+				if (i == ci) {
+					last = index;
+				}
+			}
+			elements[cp].key = elements[last].key;
+			elements[cp].value = elements[last].value;
+			elements[last].key = "";
+		}
+
 		--count;
 	}
 }
