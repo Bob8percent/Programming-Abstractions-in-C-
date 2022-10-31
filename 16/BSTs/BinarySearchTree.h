@@ -6,19 +6,33 @@ class BinarySearchTree
 {
 public:
 	struct BSTNode {
+		int bf;	//	balance factor(右のサブツリーの高さ - 左のサブツリーの高さ)
 		std::string key;
 		BSTNode* left;
 		BSTNode* right;
 	};
 
+	BinarySearchTree();
+	~BinarySearchTree();
+
+	void displayKey() const;
+
+	//BSTNode* findNode(BSTNode* node, const std::string& key) const;
+	void insertNode(const std::string& key);
+
+private:
 	BSTNode* findNode(BSTNode* node, const std::string& key) const;
 	void insertNode(BSTNode*& node, const std::string& key);
+	int insertAVL(BSTNode*& node, const std::string& key);
+	void fixRightImBalance(BSTNode*& node);
+	void fixLeftImBalance(BSTNode*& node);
+	void rotateRight(BSTNode*& node);
+	void rotateLeft(BSTNode*& node);
 
 	void displayKey(BSTNode* node) const;
 
-private:
+	void clear(BSTNode* node);
 
-	
-
+	BSTNode* root;
 };
 
