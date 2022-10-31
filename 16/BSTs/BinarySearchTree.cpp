@@ -106,7 +106,7 @@ void BinarySearchTree::fixLeftImBalance(BSTNode*& node) {
 	if (node->bf == child->bf) {
 		//	考えられるのは以下の場合だけ
 		// 
-		//	      node(-1)
+		//       node(-1)
 		//       /
 		//    child(-1)
 		//     /
@@ -126,7 +126,7 @@ void BinarySearchTree::fixLeftImBalance(BSTNode*& node) {
 		//      node(-1)             node(-1)                 node(-1)
 		//      /    \               /    \                   / 
 		//  child(1)  other      child(1)  other           child(1)
-		//	 /   \           or    /   \           or         \
+		//   /   \           or    /   \           or         \
 		// other other          other  other                  new!
 		//        /                      \
 		//      new!                     new!
