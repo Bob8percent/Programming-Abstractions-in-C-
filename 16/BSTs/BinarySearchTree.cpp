@@ -29,6 +29,7 @@ void BinarySearchTree::insertNode(BSTNode*& node, const std::string& key) {
 }
 
 //	返り値は0または1。1は新しいノードが追加されたので木が要更新であることを意味する。0は更新しなくてもよいことを意味する。
+//	insertのたびにAVLアルゴリズムによる回転を施すことで各ノードのbfを-1,0,1のどれかに保つ戦略。
 int BinarySearchTree::insertAVL(BSTNode*& node, const std::string& key) {
 	if (!node) {
 		node = new BSTNode;
