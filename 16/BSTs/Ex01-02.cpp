@@ -86,18 +86,17 @@ VectorTreeNode* readFamilyTree(const std::string& filename) {
 	return root;
 }
 
+void displayNode(VectorTreeNode* node, int depth) {
+	for (int i = 0; i < depth; ++i)std::cout << "  ";
+	std::cout << node->name << std::endl;
+
+	for (int i = 0; i < node->children.size(); ++i) {
+		displayNode(node->children[i], depth + 1);
+	}
+}
+
 void displayNode(VectorTreeNode* node) {
-	if (node->children.isEmpty())return;
-
-	std::cout << node->name << "の子は" << std::endl;
-	for (int i = 0; i < node->children.size(); ++i) {
-		std::cout << node->children[i]->name << std::endl;
-	}
-	std::cout << std::endl;
-
-	for (int i = 0; i < node->children.size(); ++i) {
-		displayNode(node->children[i]);
-	}
+	displayNode(node, 0);
 }
 
 int main() {
