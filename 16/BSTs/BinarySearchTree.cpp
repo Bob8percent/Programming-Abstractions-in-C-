@@ -28,7 +28,7 @@ void BinarySearchTree::insertNode(BSTNode*& node, const std::string& key) {
 	insertAVL(node, key);
 }
 
-//	返り値は0または1。1は新しいノードが追加されたので木が要更新であることを意味する。0は更新しなくてもよいことを意味する。
+//	返り値は0または1。1は高さが変化したことを意味し、0は不変であることを意味する。	新nodeは必ずleafになるので、再帰によって上に高さの変化を伝えられる
 //	insertのたびにAVLアルゴリズムによる回転を施すことで各ノードのbfを-1,0,1のどれかに保つ戦略。
 int BinarySearchTree::insertAVL(BSTNode*& node, const std::string& key) {
 	if (!node) {
@@ -45,17 +45,18 @@ int BinarySearchTree::insertAVL(BSTNode*& node, const std::string& key) {
 	else if (node->key > key) {
 		int delta = insertAVL(node->left, key);
 
-		//	更新の必要なし
+		//	サブツリーの高さ不変
 		if (delta == 0)return 0;
 
-		//	更新する必要あり
+		//	末端左に挿入後の「node以下」の高さについて、bf=-1のとき不変(0返す)、bf=1のとき変化(1返す)、bf=0のとき変化(1返す)
+		//	サブツリーの高さが変化した
 		switch (node->bf) {
 		case 1:
 			node->bf = 0;
 			return 0;
 		case 0:
 			node->bf = -1;
-			return 1;	//	返り値は0以外であればなんでもOK
+			return 1;
 		case -1:
 			fixLeftImBalance(node);
 			return 0;
@@ -64,17 +65,17 @@ int BinarySearchTree::insertAVL(BSTNode*& node, const std::string& key) {
 	else {
 		int delta = insertAVL(node->right, key);
 
-		//	更新の必要なし
+		//	サブツリーの高さ不変
 		if (delta == 0) return 0;
 
-		//	更新する必要あり
+		//	サブツリーの高さが変化した
 		switch (node->bf) {
 		case -1:
 			node->bf = 0;
 			return 0;
 		case 0:
 			node->bf = 1;
-			return 1;	//	返り値は0以外であればなんでもOK
+			return 1;
 		case 1:
 			fixRightImBalance(node);
 			return 0;
@@ -86,17 +87,26 @@ int BinarySearchTree::insertAVL(BSTNode*& node, const std::string& key) {
 void BinarySearchTree::fixRightImBalance(BSTNode*& node) {
 	BSTNode* child = node->right;
 	if (node->bf == child->bf) {
-		//	一回の回転で十分
-		rotateLeft(node);
+		//	一回の回転で十分		
 		node->bf = 0;
 		child->bf = 0;
+		rotateLeft(node);
 	}
 	else {
 		int bf = child->left->bf;
-		child->bf = 0;
 		child->left->bf = 0;
-		if (bf == 0) node->bf = 0;
-		else node->bf = 1;
+		if (bf == 1) {
+			child->bf = 0;
+			node->bf = -1;
+		}
+		else if (bf == -1) {
+			child->bf = 1;
+			node->bf = 0;
+		}
+		else {
+			child->bf = 0;
+			node->bf = 0;
+		}
 		rotateRight(node->right);
 		rotateLeft(node);
 	}
@@ -104,44 +114,38 @@ void BinarySearchTree::fixRightImBalance(BSTNode*& node) {
 
 void BinarySearchTree::fixLeftImBalance(BSTNode*& node) {
 	BSTNode* child = node->left;
+	
+	//	教科書の図16-7のsingle rotationの方 : 同じ向きに伸長しているとき
 	if (node->bf == child->bf) {
-		//	考えられるのは以下の場合だけ
-		// 
-		//       node(-1)
-		//       /
-		//    child(-1)
-		//     /
-		//   new!
-		// 
-		//	よって一回の回転で十分
-		rotateRight(node);
 		node->bf = 0;
 		child->bf = 0;
+		rotateRight(node);
 	}
+
+	//	教科書の図16-7のdouble rotationの方 : 異なる向きに伸長しているとき
 	else {
-		//	fixLeftImBalance()はchild->rightに挿入されたときにしか呼ばれない。
-		//	つまり、child->bf==-1、node->bf==1の時以外考えられない。
-		// 
-		//	以下の3通りが考えられる(()は関数呼び出し時のbf)
-		// 
-		//      node(-1)             node(-1)                 node(-1)
-		//      /    \               /    \                   / 
-		//  child(1)  other      child(1)  other           child(1)
-		//   /   \           or    /   \           or         \
-		// other other          other  other                  new!
-		//        /                      \
-		//      new!                     new!
-		//
+		//	図16-7のN3のbf
 		int bf = child->right->bf;
-		//	上の三種類に共通した処理
-		child->bf = 0;
-		child->right->bf = 0;
-
-		//	3つ目特有の処理
-		if (bf == 0) node->bf = 0;
-
-		//	1, 2つ目特有の処理
-		else node->bf = -1;
+		child->right->bf = 0;	//	N3
+		if (bf == 1) {
+			child->bf = -1;	//	N2
+			node->bf = 0;	//	N1
+		}
+		else if (bf == -1) {
+			child->bf = 0;
+			node->bf = 1;
+		}
+		else {
+			//	child nodeに新nodeが挿入されたとき
+			//
+			//	 node(-1)
+			//   / 
+			// child(1)
+			//   \
+			//   new!(0)
+			child->bf = 0;
+			node->bf = 0;
+		}
 
 		rotateLeft(node->left);
 		rotateRight(node);
@@ -188,3 +192,51 @@ void BinarySearchTree::clear(BSTNode* node) {
 	clear(node->right);
 	delete node;
 }
+
+//	O(logN)
+int BinarySearchTree::height(BSTNode* node) const {
+	//std::cout << node->key << " " << node->bf << std::endl;
+	if (isLeaf(node))return 1;
+
+	//	bfの正負で左右どちらのサブツリーを探索するかを決める(0のときはどちらでもいい)
+	if (node->bf > 0) {
+		return 1 + height(node->right);
+	}
+	else {
+		return 1 + height(node->left);
+	}
+}
+
+bool BinarySearchTree::isLeaf(BSTNode* node) const {
+	return !(node->left) && !(node->right);
+}
+
+void BinarySearchTree::debug() {
+	//std::cout << hasBinarySearchProperty(root) << std::endl;
+	displayKey();
+}
+
+bool BinarySearchTree::isBalanced(BSTNode* node) const {
+	return node->bf == 0;
+}
+
+//	2分探索木として整列されているか
+bool BinarySearchTree::hasBinarySearchProperty(BSTNode* node) {
+
+	BSTNode* left = node->left;
+	BSTNode* right = node->right;
+	bool isLeftCorrect = true;
+	bool isRightCorrect = true;
+	if (left)isLeftCorrect = (left->key < node->key);
+	if (right)isRightCorrect = (node->key < right->key);
+
+	if (left && !hasBinarySearchProperty(left))return false;
+	if (right && !hasBinarySearchProperty(right))return false;
+
+	//if (left && right)std::cout << left->key << " " << node->key << " " << right->key << std::endl;
+	//else if (right)std::cout << "nullptr " << node->key << " " << right->key << std::endl;
+	//else if (left)std::cout << left->key << " " << node->key << " nullptr" << std::endl;
+	//else std::cout << "nullptr " << node->key << " nullptr" << std::endl;
+	return isLeftCorrect && isRightCorrect;
+}
+
