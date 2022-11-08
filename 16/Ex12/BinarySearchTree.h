@@ -305,7 +305,21 @@ int BinarySearchTree<KeyType, ValueType>::leftReBalance(BSTNode*& actionPos) {
 		}
 		else {
 			fixLeftImBalance(actionPos, REMOVE_4);
-			child = actionPos->left;
+			child = actionPos->right->left;
+			if (child->color == 0) {
+				if (child->right && child->right->color == 1) {
+					fixRightImBalance(actionPos->right, REMOVE_1);
+				}
+				else if (child->left && child->left->color == 1) {
+					fixRightImBalance(actionPos->right, REMOVE_2);
+				}
+				else {
+					bool isBlack = (actionPos->right->color == 0);
+					fixRightImBalance(actionPos->right, REMOVE_3);
+					if (isBlack)return 1;	//	黒の数が変化(一つ減る)
+				}
+			}
+			return 0;
 		}
 	}
 }
@@ -313,26 +327,38 @@ int BinarySearchTree<KeyType, ValueType>::leftReBalance(BSTNode*& actionPos) {
 template <typename KeyType, typename ValueType>
 int BinarySearchTree<KeyType, ValueType>::rightReBalance(BSTNode*& actionPos) {
 	BSTNode* child = actionPos->right;
-	while (child) {
-		if (child->color == 0) {
-			if (child->left && child->left->color == 1) {
-				fixRightImBalance(actionPos, REMOVE_1);
-			}
-			else if (child->right && child->right->color == 1) {
-				fixRightImBalance(actionPos, REMOVE_2);
-			}
-			else {
-				bool isBlack = (actionPos->color == 0);
-				fixRightImBalance(actionPos, REMOVE_3);
-				if (isBlack)return 1;	//	黒の数が変化(一つ減る)
-			}
-
-			return 0;	//	actionPosを根とする木の黒の数は変わらない
+	if (child->color == 0) {
+		if (child->left && child->left->color == 1) {
+			fixRightImBalance(actionPos, REMOVE_1);
+		}
+		else if (child->right && child->right->color == 1) {
+			fixRightImBalance(actionPos, REMOVE_2);
 		}
 		else {
-			fixRightImBalance(actionPos, REMOVE_4);
-			child = actionPos->left;
+			bool isBlack = (actionPos->color == 0);
+			fixRightImBalance(actionPos, REMOVE_3);
+			if (isBlack)return 1;	//	黒の数が変化(一つ減る)
 		}
+
+		return 0;	//	actionPosを根とする木の黒の数は変わらない
+	}
+	else {
+		fixRightImBalance(actionPos, REMOVE_4);
+		child = actionPos->left->right;
+		if (child->color == 0) {
+			if (child->left && child->left->color == 1) {
+				fixRightImBalance(actionPos->left, REMOVE_1);
+			}
+			else if (child->right && child->right->color == 1) {
+				fixRightImBalance(actionPos->left, REMOVE_2);
+			}
+			else {
+				bool isBlack = (actionPos->left->color == 0);
+				fixRightImBalance(actionPos->left, REMOVE_3);
+				if (isBlack)return 1;	//	黒の数が変化(一つ減る)
+			}
+		}
+		return 0;
 	}
 }
 
