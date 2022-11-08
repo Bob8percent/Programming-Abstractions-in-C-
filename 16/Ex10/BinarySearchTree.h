@@ -546,7 +546,9 @@ void BinarySearchTree<KeyType, ValueType>::deepCopy(BSTNode*& node, const BSTNod
 	if (!srcNode)return;
 
 	node = new BSTNode;
+	node->bf = srcNode->bf;
 	node->key = srcNode->key;
+	node->value = srcNode->value;
 	node->right = nullptr;
 	node->left = nullptr;
 
