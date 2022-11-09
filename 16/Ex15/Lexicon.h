@@ -22,13 +22,17 @@ public:
 	//	小文字、大文字を区別しない
 	void add(const std::string& word) {
 		Cell** cp = &root;
-		for (int i = 0; i < word.length(); ++i) {
+		for (int i = 0; i <= word.length(); ++i) {
 			if (!(*cp)) {
-				*cp = new Cell[ALPHA_NUM];
-				for (int k = 0; k < ALPHA_NUM; ++k) {
+				*cp = new Cell[ALPHA_NUM + 1];	//	配列の末尾はyes/no(たどってきた文字列がその時点で存在するか)
+				for (int k = 0; k <= ALPHA_NUM; ++k) {
 					(*cp)[k].ch = -1;
 					(*cp)[k].link = nullptr;
 				}
+			}
+			if (i == word.length()) {
+				(*cp)[ALPHA_NUM].ch = 1;
+				break;
 			}
 			char ch = tolower(word.at(i));
 			(*cp)[ch - 'a'].ch = ch;
@@ -38,8 +42,12 @@ public:
 
 	bool find(const std::string& word) const {
 		Cell* cp = root;
-		for (int i = 0; i < word.length(); ++i) {
+		for (int i = 0; i <= word.length(); ++i) {
 			if (!cp)return false;
+
+			if (i == word.length()) {
+				return cp[ALPHA_NUM].ch == 1;
+			}
 
 			char ch = tolower(word.at(i));
 			if (ch == cp[ch - 'a'].ch) {
@@ -47,7 +55,6 @@ public:
 			}
 			else return false;
 		}
-		return true;
 	}
 
 	void clear() {
