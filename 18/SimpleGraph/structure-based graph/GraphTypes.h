@@ -3,6 +3,8 @@
 #include <map>
 #include <string>
 
+//	structure-basedによるとてもシンプルなグラフの実装。
+
 //	前方参照：「実体」を持つ場合は「定義」が必要だが、「ポインタ」を持つ場合は「宣言」だけでよい.関数の返り値や引数の型として用いる場合も宣言でOK
 struct Node;
 struct Arc;
