@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include "Library/vector.h"
+#include "_PQueue.h"
 
 template<typename NodeType, typename ArcType>
 class Graph {
@@ -45,12 +46,17 @@ public:
 
 	Graph<NodeType, ArcType>& operator=(const Graph<NodeType, ArcType>& src);
 
+	Vector<ArcType*> findShortestPath(const std::string& startName, const std::string& endName);
+	Vector<ArcType*> findShortestPath(NodeType* start, NodeType* end);
+
 private:
 	std::set<NodeType*> nodes;
 	std::set<ArcType*> arcs;
 	std::map<std::string, NodeType*> nodeMap;
 
 	void deepCopy(const Graph<NodeType, ArcType>& src);
+
+	double getPathCost(Vector<ArcType*> path) const;
 
 };
 
@@ -272,4 +278,54 @@ void Graph<NodeType, ArcType>::deepCopy(const Graph<NodeType, ArcType>& src) {
 		ac->end = nodeMap[a->end->name];
 		addArc(ac);
 	}
+}
+
+template<typename NodeType, typename ArcType>
+Vector<ArcType*> Graph<NodeType, ArcType>::findShortestPath(const std::string& startName, const std::string& endName) {
+	return findShortestPath(nodeMap[startName], nodeMap[endName]);
+}
+
+//	ダイクストラ法:最短距離(コスト)の確定した点から最近傍点への合計距離(コスト)が最小となる点を確定する。これを繰り返す。
+//	参考：https://www.youtube.com/watch?v=X1AsMlJdiok&list=LL&index=1
+template<typename NodeType, typename ArcType>
+Vector<ArcType*> Graph<NodeType, ArcType>::findShortestPath(NodeType* start, NodeType* end) {
+	Vector<ArcType*> path;
+	PQueue<Vector<ArcType*>> queue;
+	std::set<NodeType*> confirmed;	//	最短距離(コスト)が確定したノードら
+
+	NodeType* cp = start;
+	while (cp != end) {
+		if (!confirmed.contains(cp)) {
+			confirmed.insert(cp);	//	cpへ向かうより短いパスはそれ以外に存在しないから確定できる
+
+			//	新たに確定した点から最近傍点への合計距離を検討する
+			for (ArcType* a : cp->arcs) {
+				if (!confirmed.contains(a->end)) {
+					path += a;
+					queue.enqueue(path, getPathCost(path));
+					path.remove(path.size() - 1);
+				}
+			}
+		}
+
+		if (queue.isEmpty()) {
+			std::cerr << "ERROR : Vector<ArcType*> Graph::findShortestPath(NodeType* start, NodeType* end) : "
+				<< "startからendへのパスが見つかりませんでした" << std::endl;
+			std::exit(EXIT_FAILURE);
+		}
+
+		path = queue.dequeue();	//	最短距離のパスを記録
+		cp = path[path.size() - 1]->end;	//	最短距離が確定した点をcpへ
+	}
+
+	return path;
+}
+
+template<typename NodeType, typename ArcType>
+double Graph<NodeType, ArcType>::getPathCost(Vector<ArcType*> path) const {
+	double cost = 0;
+	for (ArcType* a : path) {
+		cost += a->cost;
+	}
+	return cost;
 }
