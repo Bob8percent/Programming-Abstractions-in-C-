@@ -296,7 +296,7 @@ Vector<ArcType*> Graph<NodeType, ArcType>::findShortestPath(NodeType* start, Nod
 	NodeType* cp = start;
 	while (cp != end) {
 		if (!confirmed.contains(cp)) {
-			confirmed.insert(cp);	//	cpへ向かうより短いパスはそれ以外に存在しないから確定できる
+			confirmed.insert(cp);	//	コストは非負を前提としているので、cpへ向かうより短いパスはそれ以外に存在しないから確定できる
 
 			//	新たに確定した点から最近傍点への合計距離を検討する
 			for (ArcType* a : cp->arcs) {
