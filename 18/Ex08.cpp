@@ -149,7 +149,7 @@ void writeGraph(SimpleGraph& g, std::ostream& os) {
 	}
 }
 
-//	ダイクストラ法でも行けるけどBFSでもできる.ただし最小のhopとなるとは限らない
+//	最小のhopが欲しいときはダイクストラ法を使うべき。ただし最小でなくてもいいならBFSでもできる。
 int hopCount(Node* n1, Node* n2) {
 	if (n1 == n2)return 0;
 	std::set<Node*> visited;
