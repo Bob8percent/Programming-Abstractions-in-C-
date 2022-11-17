@@ -148,40 +148,13 @@ void writeGraph(SimpleGraph& g, std::ostream& os) {
 
 	}
 }
-//
-////	平均キュー長：6.28
-//void breadthFirstSearch(Node* node) {
-//	std::set<Node*> visited;
-//	std::queue<Node*> q;
-//	q.push(node);
-//
-//	double average = 0;
-//	int count = 0;
-//	while (!q.empty()) {
-//		++count;
-//		average += q.size();
-//
-//		Node* cp = q.front();
-//		q.pop();
-//
-//		if (visited.contains(cp))continue;
-//		visited.insert(cp);
-//		
-//		for (Arc* a : cp->arcs) {
-//			Node* n = a->end;
-//			q.push(n);
-//		}
-//	}
-//
-//	std::cout << "平均キュー長：" << average / count << std::endl;
-//}
 
-//	平均キュー長：2.6
+//	ループカウント：25
+//	平均キュー長：5.64
 void breadthFirstSearch(Node* node) {
 	std::set<Node*> visited;
 	std::queue<Node*> q;
 	q.push(node);
-	visited.insert(node);
 
 	double average = 0;
 	int count = 0;
@@ -192,15 +165,46 @@ void breadthFirstSearch(Node* node) {
 		Node* cp = q.front();
 		q.pop();
 
+		if (visited.contains(cp))continue;
+		visited.insert(cp);
+		
 		for (Arc* a : cp->arcs) {
 			Node* n = a->end;
-			if(!visited.contains(n))q.push(n);
-			visited.insert(n);
+			q.push(n);
 		}
 	}
 
+	std::cout << "ループカウント：" << count << std::endl;
 	std::cout << "平均キュー長：" << average / count << std::endl;
 }
+//
+////	平均キュー長：2.6
+////	ループカウント：10
+//void breadthFirstSearch(Node* node) {
+//	std::set<Node*> visited;
+//	std::queue<Node*> q;
+//	q.push(node);
+//	visited.insert(node);
+//
+//	double average = 0;
+//	int count = 0;
+//	while (!q.empty()) {
+//		++count;
+//		average += q.size();
+//
+//		Node* cp = q.front();
+//		q.pop();
+//
+//		for (Arc* a : cp->arcs) {
+//			Node* n = a->end;
+//			if(!visited.contains(n))q.push(n);
+//			visited.insert(n);
+//		}
+//	}
+//
+//	std::cout << "ループカウント：" << count << std::endl;
+//	std::cout << "平均キュー長：" << average / count << std::endl;
+//}
 
 std::string randomWord(int n = 8) {
 	std::string word;
