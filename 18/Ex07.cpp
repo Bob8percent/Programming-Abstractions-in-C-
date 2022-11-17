@@ -152,14 +152,14 @@ void writeGraph(SimpleGraph& g, std::ostream& os) {
 bool pathExists(Node* n1, Node* n2) {
 	if (n1 == n2)return true;
 	std::set<Node*> visited;
-	std::queue<Node*> s;
+	std::stack<Node*> s;
 	s.push(n1);
 	visited.insert(n1);
 	int count = 0;
 
 	while (!s.empty()) {
 		++count;
-		Node* cp = s.front();
+		Node* cp = s.top();
 		s.pop();
 
 		//std::cout << cp->name << std::endl;
@@ -167,6 +167,8 @@ bool pathExists(Node* n1, Node* n2) {
 		for (Arc* a : cp->arcs) {
 			Node* n = a->end;
 			if (!visited.contains(n))s.push(n);
+			else continue;
+
 			if (n == n2) {
 				std::cout << "ループ数：" << count << std::endl;
 				return true;
@@ -189,17 +191,17 @@ int main() {
 
 	SimpleGraph airline;
 	readGraph(airline, ifs);
-	
+
 	printAdjacencyLists(airline);
 
 	std::cout << "---------------------------------" << std::endl;
 
 	//	depthが深いパターンのループ数
-	//	DFS:5, BFS:8
+	//	DFS:3, BFS:8
 	pathExists(airline.nodeMap["Atlanta"], airline.nodeMap["Seattle"]);
-	
+
 	//	depthが浅いパターンのループ数
-	//	DFS:9, BFS:4
+	//	DFS:9, BFS:3
 	pathExists(airline.nodeMap["Atlanta"], airline.nodeMap["Los Angeles"]);
 
 	ifs.clear();	//	フラグ解消
