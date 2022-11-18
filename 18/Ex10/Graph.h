@@ -69,6 +69,8 @@ public:
 		}
 	}
 
+	//	Ex10のようにgraphio.hに導入したいとき、friend宣言とtemplate宣言をしなければいけない(しなければLNK2019エラー)
+	//	-> template<typename NodeType, typename ArcType> friend void readGraph()みたいな感じ
 	void readGraph(std::istream& is);
 	void writeGraph(std::ostream& os);
 
