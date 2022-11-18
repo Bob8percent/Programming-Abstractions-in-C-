@@ -16,12 +16,23 @@ int main() {
 	
 	Graph<City, Flight> g;
 	g.readGraph(ifs);
-	Vector<Flight*> path = g.findShortestPath("Atlanta", "Portland");
-	double cost = 0;
-	std::cout << "Atlanta";
+
+
+	//	ユーザー入力
+	std::string s1, s2;
+	std::cout << "地点1 : ";
+	std::getline(std::cin, s1);
+	std::cout << "地点2 : ";
+	std::getline(std::cin, s2);
+
+	Vector<Flight*> path = g.findShortestPath(s1, s2);
+
+	bool isFirst = true;
 	for (Flight* f : path) {
+		if (isFirst) {
+			std::cout << f->getStartName();
+			isFirst = false;
+		}
 		std::cout << " -> " << f->getEndName();
-		cost += f->getCost();
 	}
-	std::cout << cost << std::endl;
 }
