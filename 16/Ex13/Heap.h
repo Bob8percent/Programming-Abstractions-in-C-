@@ -96,22 +96,32 @@ void Heap<ValueType>::reBalace() {
 	int n = 0;
 	while (1) {
 		int left = leftChildIndex(n);
-		int right = leftChildIndex(n);
+		int right = rightChildIndex(n);
 		
 		bool isEnd = true;
+		bool isMinorLeft = true;	//	左の子が右の子より小さいかどうか
+		int tmpIdx = n;
 
-		if ((left < elements.size()) && (elements[left].priority < elements[n].priority)) {
-			std::swap(elements[left], elements[n]);
-			n = left;
+		if ((left < elements.size()) && (elements[left].priority < elements[tmpIdx].priority)) {
+			isEnd = false;
+			tmpIdx = left;
+		}
+		if ((right < elements.size()) && (elements[right].priority < elements[tmpIdx].priority)) {
+			isMinorLeft = false;
 			isEnd = false;
 		}
-		if ((right < elements.size()) && (elements[right].priority < elements[n].priority)) {
-			std::swap(elements[right], elements[n]);
-			n = right;
-			isEnd = false;
-		}
 
-		if (isEnd)break;
+		if (isEnd)return;
+		else {
+			if (isMinorLeft) {
+				std::swap(elements[left], elements[n]);
+				n = left;
+			}
+			else {
+				std::swap(elements[right], elements[n]);
+				n = right;
+			}
+		}
 	}
 }
 
