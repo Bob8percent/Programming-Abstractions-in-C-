@@ -599,7 +599,6 @@ Graph<NodeType, ArcType> Graph<NodeType, ArcType>::findMinimumSpanningTree() con
 }
 
 //	可能な限り小さい支配集合を見つける
-//	Ex14のアルゴリズムに従うが、精度は高いが常に最小とは限らないようだ
 template<typename NodeType, typename ArcType>
 std::set<NodeType*> Graph<NodeType, ArcType>::findDominatingSet() const {
 	std::set<NodeType*> s;
@@ -612,7 +611,7 @@ std::set<NodeType*> Graph<NodeType, ArcType>::findDominatingSet() const {
 	while (1) {
 		NodeType* cp = q.dequeue();
 		
-		//	cpに関して、sに含まれるどのノードの隣接ノードとならない場合は、sに追加
+		//	Ex14のアルゴリズムに従わず、cpに関して、sに含まれるどのノードの隣接ノードとならない場合は、sに追加
 		bool isInsert = true;
 		for (NodeType* sn : s) {
 			for (ArcType* sa : sn->arcs) {
