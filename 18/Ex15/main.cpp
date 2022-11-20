@@ -27,7 +27,7 @@ int main() {
 
 	//	送信
 	bool isAllComplete = false;
-	while (!isAllComplete) {
+	while (!isAllComplete) {	//	終了条件はすべてのルーティングアレイに未確定の要素がなくなるときにしたが、それでいいのかよくわからない
 		isAllComplete = true;
 		for (ARPAnode* n : nodes) {
 			if (!n->isComplete())isAllComplete = false;
