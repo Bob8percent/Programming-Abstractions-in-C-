@@ -42,10 +42,10 @@ public:
 	bool hasPathUsingBFS(const std::string& s1, const std::string& s2) const;
 	bool hasPathUsingBFS(NodeType* n1, NodeType* n2) const;
 
-	std::set<NodeType*>& getNodeSet() const;
-	std::set<ArcType*>& getArcSet() const;
-	std::set<ArcType*>& getArcSet(const std::string& name) const;
-	std::set<ArcType*>& getArcSet(NodeType* node) const;
+	std::set<NodeType*>& getNodeSet();
+	std::set<ArcType*>& getArcSet();
+	std::set<ArcType*>& getArcSet(const std::string& name);
+	std::set<ArcType*>& getArcSet(NodeType* node);
 
 	std::set<NodeType*> getNeighbors(const std::string& name) const;
 	std::set<NodeType*> getNeighbors(NodeType* node) const;
@@ -280,24 +280,24 @@ bool Graph<NodeType, ArcType>::hasPathUsingBFS(NodeType* n1, NodeType* n2) const
 }
 
 template<typename NodeType, typename ArcType>
-std::set<NodeType*>& Graph<NodeType, ArcType>::getNodeSet() const {
+std::set<NodeType*>& Graph<NodeType, ArcType>::getNodeSet() {
 	return nodes;
 }
 
 
 template<typename NodeType, typename ArcType>
-std::set<ArcType*>& Graph<NodeType, ArcType>::getArcSet() const {
+std::set<ArcType*>& Graph<NodeType, ArcType>::getArcSet() {
 	return arcs;
 }
 
 template<typename NodeType, typename ArcType>
-std::set<ArcType*>& Graph<NodeType, ArcType>::getArcSet(const std::string& name) const {
+std::set<ArcType*>& Graph<NodeType, ArcType>::getArcSet(const std::string& name) {
 	return nodeMap[name]->arcs;
 }
 
 
 template<typename NodeType, typename ArcType>
-std::set<ArcType*>& Graph<NodeType, ArcType>::getArcSet(NodeType* node) const {
+std::set<ArcType*>& Graph<NodeType, ArcType>::getArcSet(NodeType* node) {
 	return node->arcs;
 }
 
