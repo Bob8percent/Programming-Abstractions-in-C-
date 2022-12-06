@@ -16,17 +16,16 @@ void drawTest(sf::RenderWindow& window) {
     r3.setFillColor(sf::Color::White);
 
     Oval o1(100, 100, 50, 70);
-    window.draw(o1);
-
     Square s1(200, 200, 100);
-    window.draw(s1);
-
     Circle c1(150, 300, 100);
-    window.draw(c1);
 
-    window.draw(r1);
-    window.draw(r2);
-    window.draw(r3);
+    Vector<sf::Shape*> rv;
+    rv += &r1, & r2, & r3, & o1, & s1, & c1;
+
+    //  Shapeクラスを継承しているのでdraw呼び出しできる
+    for (sf::Shape* p : rv) {
+        window.draw(*p);
+    }
 }
 
 int main() {
