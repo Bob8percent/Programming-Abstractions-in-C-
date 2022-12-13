@@ -14,6 +14,9 @@ Expression<ValueType>* readE(TokenScanner& scanner, int prec);
 Expression<ValueType>* readT(TokenScanner& scanner);
 int precedence(const std::string& token);
 void listVariables(Expression<ValueType>* exp);
+void listVariables(Expression<ValueType>* exp, std::set<std::string>& variables);
+Expression<ValueType>* changeVariable(Expression<ValueType>* exp, 
+	const std::string& oldName, const std::string& newName);
 
 int main() {
 	EvaluationContext<ValueType> context;
@@ -37,6 +40,7 @@ int main() {
 		//	構文解析
 		exp = parseExp(scanner);
 		ValueType value = exp->eval(context);
+		//Expression<ValueType>* tmp = changeVariable(exp, "x", "y");
 		std::cout << "解析結果 : " << value << std::endl;
 		listVariables(exp);
 
@@ -117,11 +121,54 @@ int precedence(const std::string& token) {
 	return 0;
 }
 
-//	newVarialesメンバをExpressionクラスに持たせることで解決した
-//	式木を探索してExpressionTypeを各ノードを確認する方法も考えたが、それだと代入操作の時の左辺変数を表示できない問題がある
 void listVariables(Expression<ValueType>* exp) {
-	for (std::string e : Expression<ValueType>::newVariables) {
+	std::set<std::string> variables;
+	listVariables(exp, variables);
+	for (const std::string& e : variables) {
 		std::cout << e << std::endl;
 	}
 }
 
+void listVariables(Expression<ValueType>* exp, std::set<std::string>& variables) {
+	ExpressionType et = exp->getType();
+	if (et == CONSTANT) {
+		return;
+	}
+	else if (et == IDENTIFIER) {
+		variables.insert(exp->getIdentifierName());
+		return;
+	}
+	else if (et == COMPOUND) {
+		listVariables(exp->getRHS(), variables);
+		listVariables(exp->getLHS(), variables);
+		return;
+	}
+
+	std::cerr << "ERROR : void listVariables(Expression<ValueType>* exp, std::set<std::string>& variables) : "
+		<< "ExpressionTypeが不適当な値となっています" << std::endl;
+	std::exit(EXIT_FAILURE);
+}
+
+//	注意 : expをルートとする式木は変更しない
+Expression<ValueType>* changeVariable(Expression<ValueType>* exp, 
+	const std::string& oldName, const std::string& newName) {
+	ExpressionType et = exp->getType();
+	if (et == CONSTANT) {
+		return new ConstantExp<ValueType>(exp->getConstantValue());
+	}
+	else if (et == IDENTIFIER) {
+		std::string name = exp->getIdentifierName();
+		if (name == oldName) name = newName;
+		return new IdentifierExp<ValueType>(name);
+	}
+	else if (et == COMPOUND) {
+		Expression<ValueType>* rhs = changeVariable(exp->getRHS(), oldName, newName);
+		Expression<ValueType>* lhs = changeVariable(exp->getLHS(), oldName, newName);
+		return new CompoundExp<ValueType>(exp->getOperator(), rhs, lhs);
+	}
+
+	std::cerr << "ERROR : Expression<ValueType>*changeVariable(Expression<ValueType>*exp"
+		<< "const std::string & oldName, const std::string& newName) : "
+		<< "ExpressionTypeが不適当な値となっています" << std::endl;
+	std::exit(EXIT_FAILURE);
+}
