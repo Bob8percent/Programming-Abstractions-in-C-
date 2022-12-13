@@ -31,18 +31,10 @@ public:
 	virtual std::string getOperator() const;
 	virtual Expression* getLHS() const;
 	virtual Expression* getRHS() const;
-
-public:
-	//	TODO : staticメンバをpublicにするとクライアントにも変更できてしまう問題がある
-	static std::set<std::string> newVariables;
 };
 
 template <typename ValueType>
-std::set<std::string> Expression<ValueType>::newVariables;
-
-template <typename ValueType>
 Expression<ValueType>::~Expression() {
-	newVariables.clear();
 }
 
 template <typename ValueType>
@@ -156,7 +148,6 @@ private:
 template <typename ValueType>
 IdentifierExp<ValueType>::IdentifierExp(const std::string& name) {
 	this->name = name;
-	Expression<ValueType>::newVariables.insert(name);
 }
 
 template <typename ValueType>
@@ -184,6 +175,7 @@ template <typename ValueType>
 std::string IdentifierExp<ValueType>::getIdentifierName() const {
 	return name;
 }
+
 /*
 * =================================================================================================
 * CompoundExpクラス
