@@ -43,7 +43,7 @@ std::string::iterator exceptArticle(std::string& s) {
 }
 
 //	文字の大小を無視してs1<s2かどうかを判定する
-bool lessIgnoringCase(std::string& s1, std::string& s2) {
+bool titleComesBefore(std::string& s1, std::string& s2) {
 	for (std::string::iterator i = exceptArticle(s1), j = exceptArticle(s2)
 		; i != s1.end() && j != s2.end()
 		; ++i, ++j) {
@@ -68,5 +68,5 @@ bool lessIgnoringCase(std::string& s1, std::string& s2) {
 int main() {
 	std::string s1 = "the ABC";
 	std::string s2 = "a abc";
-	std::cout << lessIgnoringCase(s1, s2) << std::endl;
+	std::cout << titleComesBefore(s1, s2) << std::endl;
 }
