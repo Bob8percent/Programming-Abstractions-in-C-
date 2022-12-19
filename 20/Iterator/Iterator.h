@@ -19,7 +19,7 @@ public:
 		if (!vp) {
 			std::cerr << "ERROR : ValueType& Iterator::operator*() : "
 				<< "vpが初期化されていません" << std::endl;
-			std::error(EXIT_FAILURE);
+			std::exit(EXIT_FAILURE);
 		}
 		return vp[index];
 	}
@@ -28,7 +28,7 @@ public:
 		if (!vp) {
 			std::cerr << "ERROR : ValueType* Iterator::operator->() : "
 				<< "vpが初期化されていません" << std::endl;
-			std::error(EXIT_FAILURE);
+			std::exit(EXIT_FAILURE);
 		}
 		return &vp[index];	//	アドレスを返す
 	}
@@ -37,7 +37,7 @@ public:
 		if (!vp) {
 			std::cerr << "ERROR : ValueType& Iterator::operator[](int k) : "
 				<< "vpが初期化されていません" << std::endl;
-			std::error(EXIT_FAILURE);
+			std::exit(EXIT_FAILURE);
 		}
 		return vp[index + k];
 	}
@@ -46,16 +46,16 @@ public:
 		if (vp != rhs.vp) {
 			std::cerr << "ERROR : bool Iterator::operator==(const Iterator<ValueType>& rhs) : "
 				<< "vpと異なるVectorです" << std::endl;
-			std::error(EXIT_FAILURE);
+			std::exit(EXIT_FAILURE);
 		}
 		return (vp == rhs.vp) && (index == rhs.index);
 	}
 
-	bool operator!=(const Iterato<ValueType>& rhs) {
+	bool operator!=(const Iterator<ValueType>& rhs) {
 		if (vp != rhs.vp) {
 			std::cerr << "ERROR : bool Iterator::operator!=(const Iterator<ValueType>& rhs) : "
 				<< "vpと異なるVectorです" << std::endl;
-			std::error(EXIT_FAILURE);
+			std::exit(EXIT_FAILURE);
 		}
 		return !(this == rhs);
 	}
@@ -64,7 +64,7 @@ public:
 		if (vp != rhs.vp) {
 			std::cerr << "ERROR : bool Iterator::operator<(const Iterator<ValueType>& rhs) : "
 				<< "vpと異なるVectorです" << std::endl;
-			std::error(EXIT_FAILURE);
+			std::exit(EXIT_FAILURE);
 		}
 		return index < rhs.index;
 	}
@@ -72,7 +72,7 @@ public:
 		if (vp != rhs.vp) {
 			std::cerr << "ERROR : bool Iterator::operator>(const Iterator<ValueType>& rhs) : "
 				<< "vpと異なるVectorです" << std::endl;
-			std::error(EXIT_FAILURE);
+			std::exit(EXIT_FAILURE);
 		}
 		return index > rhs.index;
 	}
@@ -80,7 +80,7 @@ public:
 		if (vp != rhs.vp) {
 			std::cerr << "ERROR : bool Iterator::operator<=(const Iterator<ValueType>& rhs) : "
 				<< "vpと異なるVectorです" << std::endl;
-			std::error(EXIT_FAILURE);
+			std::exit(EXIT_FAILURE);
 		}
 		return index <= rhs.index;
 	}
@@ -88,7 +88,7 @@ public:
 		if (vp != rhs.vp) {
 			std::cerr << "ERROR : bool Iterator::operator>=(const Iterator<ValueType>& rhs) : "
 				<< "vpと異なるVectorです" << std::endl;
-			std::error(EXIT_FAILURE);
+			std::exit(EXIT_FAILURE);
 		}
 		return index >= rhs.index;
 	}
@@ -97,7 +97,7 @@ public:
 		if (!vp) {
 			std::cerr << "ERROR : ValueType& Iterator::operator++() : "
 				<< "vpが初期化されていません" << std::endl;
-			std::error(EXIT_FAILURE);
+			std::exit(EXIT_FAILURE);
 		}
 		++index;
 		return *this;
@@ -106,17 +106,17 @@ public:
 		if (!vp) {
 			std::cerr << "ERROR : ValueType Iterator::operator++(int) : "
 				<< "vpが初期化されていません" << std::endl;
-			std::error(EXIT_FAILURE);
+			std::exit(EXIT_FAILURE);
 		}
 		Iterator copy(*this);	//	デフォルトのコピーコンストラクタ(浅いコピーでOK)
 		++index;
-		return copy
+		return copy;
 	}
 	Iterator<ValueType>& operator--() {
 		if (!vp) {
 			std::cerr << "ERROR : ValueType& Iterator::operator--() : "
 				<< "vpが初期化されていません" << std::endl;
-			std::error(EXIT_FAILURE);
+			std::exit(EXIT_FAILURE);
 		}
 		--index;
 		return *this;
@@ -125,18 +125,18 @@ public:
 		if (!vp) {
 			std::cerr << "ERROR : ValueType Iterator::operator--(int) : "
 				<< "vpが初期化されていません" << std::endl;
-			std::error(EXIT_FAILURE);
+			std::exit(EXIT_FAILURE);
 		}
 		Iterator<ValueType> copy(*this);	//	デフォルトのコピーコンストラクタ(浅いコピーでOK)
 		--index;
-		return copy
+		return copy;
 	}
 
 	Iterator<ValueType> operator+(int k) {
 		if (!vp) {
 			std::cerr << "ERROR : Iterator Iterator::operator+(int k) : "
 				<< "vpが初期化されていません" << std::endl;
-			std::error(EXIT_FAILURE);
+			std::exit(EXIT_FAILURE);
 		}
 
 		return Iterator<ValueType>(vp, index + k);
@@ -145,7 +145,7 @@ public:
 		if (!vp) {
 			std::cerr << "ERROR : Iterator Iterator::operator-(int k) : "
 				<< "vpが初期化されていません" << std::endl;
-			std::error(EXIT_FAILURE);
+			std::exit(EXIT_FAILURE);
 		}
 
 		return Iterator<ValueType>(vp, index - k);
@@ -154,12 +154,12 @@ public:
 		if (!vp) {
 			std::cerr << "ERROR : int Iterator::operator-(const Iterator& rhs) : "
 				<< "vpが初期化されていません" << std::endl;
-			std::error(EXIT_FAILURE);
+			std::exit(EXIT_FAILURE);
 		}
 		if (vp != rhs.vp) {
 			std::cerr << "ERROR : int Iterator::operator-(const Iterator& rhs) : "
 				<< "vpと異なるVectorです" << std::endl;
-			std::error(EXIT_FAILURE);
+			std::exit(EXIT_FAILURE);
 		}
 		return index - rhs.index;
 	}
