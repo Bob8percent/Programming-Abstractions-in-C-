@@ -115,7 +115,7 @@ Expression<ValueType>* readT(TokenScanner& scanner, const EvaluationContext<Valu
 	TokenScanner::TokenType t = scanner.getTokenType(token);
 	if (t == TokenScanner::TokenType::WORD) {
 		if (context.isFuncDefined(token)) {
-			Expression<ValueType>* exp = readE(scanner, 0, context);
+			Expression<ValueType>* exp = readT(scanner, context);
 			return new FunctionExp<ValueType>(token, exp);
 		}
 		else {
