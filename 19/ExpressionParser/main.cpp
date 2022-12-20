@@ -62,6 +62,8 @@ Expression* readE(TokenScanner& scanner, int prec) {
 	Expression* exp = readT(scanner);	//	lhs
 
 	std::string op;
+	//	参照 : http://dai1741.github.io/maximum-algo-2012/docs/parsing/
+	//	基本的に上のURLと同じことをしている
 	while (1) {
 		op = scanner.nextToken();
 		int tprec = precedence(op);
